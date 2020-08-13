@@ -22,7 +22,31 @@ Library which provides new features for (de)serialization on top of [Jackson lib
 
 All examples have corresponding tests and additional usage examples can be found in tests.
 
-In case you need the functionality without Spring Boot you can do the wiring manually:
+#### Spring Boot
+
+Just include the following dependency:
+
+```xml
+<dependency>
+    <groupId>com.infobip</groupId>
+    <artifactId>infobip-jackson-extension-spring-boot-starter</artifactId>
+    <version>${infobip-jackson-extension.version}</version>
+</dependency>
+```
+
+#### Without Spring Boot
+
+Include the following dependency:
+
+```xml
+<dependency>
+    <groupId>com.infobip</groupId>
+    <artifactId>infobip-jackson-extension-module</artifactId>
+    <version>${infobip-jackson-extension.version}</version>
+</dependency>
+```
+
+Register the module with `ObjectMapper`:
 
 ```java
 objectMapper.registerModule(new InfobipJacksonModule());     
