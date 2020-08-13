@@ -80,7 +80,7 @@ Name of the property can be overridden:
 
 Casing of the property type value can be overridden:
 
-[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/LowerCaseTypeSimpleJsonHierarchyRmiTest.java)
+[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/LowerCaseTypeSimpleJsonHierarchyTest.java)
 
 <a name="MultiLevelHierarchies"></a>
 ### Multi level hierarchies
