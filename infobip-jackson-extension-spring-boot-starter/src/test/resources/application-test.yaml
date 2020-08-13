@@ -1,0 +1,2 @@
+spring:
+  jackson.parser.ALLOW_SINGLE_QUOTES: true
