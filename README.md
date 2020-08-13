@@ -8,8 +8,6 @@ Library which provides new features for (de)serialization on top of [Jackson lib
 
 ## Contents
 
-## Contents
-
 * [Setup](#Setup)
 * [Features](#Features)
     * [Simple json hierarchy](#SimpleJsonHierarchy)
