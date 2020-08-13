@@ -38,6 +38,34 @@ objectMapper.registerModule(new InfobipJacksonModule());
 
 For models that have a type represented by an enum you can use simple typed json approach:
 
+```java
+interface FooBar extends SimpleJsonHierarchy<FooBarType> {
+}
+
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class Foo implements FooBar {
+    private final String foo;
+    private final FooBarType type = FooBarType.FOO;
+}
+
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class Bar implements FooBar {
+    private final String bar;
+    private final FooBarType type = FooBarType.BAR;
+}
+
+@Getter
+@AllArgsConstructor
+enum FooBarType implements TypeProvider {
+    FOO(Foo.class),
+    BAR(Bar.class);
+
+    private final Class<? extends FooBar> type;
+}
+```
+
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/SimpleJsonHierarchyDeserializerTest.java)
 
 <a name="OverridingTypeJsonPropertyName"></a>
@@ -59,6 +87,55 @@ Casing of the property type value can be overridden:
 
 If you have multiple levels of hierarchy following approach can be used:
 
+```java
+@JsonTypeResolveWith(AnimalJsonTypeResolver.class)
+interface Animal {
+    AnimalType getAnimalType();
+}
+
+static class AnimalJsonTypeResolver extends SimpleJsonTypeResolver<AnimalType> {
+    public AnimalJsonTypeResolver() {
+        super(AnimalType.class, "animalType");
+    }
+}
+
+@JsonTypeResolveWith(MammalJsonTypeResolver.class)
+interface Mammal extends Animal {
+    MammalType getMammalType();
+}
+
+static class MammalJsonTypeResolver extends SimpleJsonTypeResolver<MammalType> {
+
+    public MammalJsonTypeResolver() {
+        super(MammalType.class, "mammalType");
+    }
+}
+
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class Human implements Mammal {
+    private final String name;
+    private final AnimalType animalType = AnimalType.MAMMAL;
+    private final MammalType mammalType = MammalType.HUMAN;
+}
+
+@Getter
+@AllArgsConstructor
+enum AnimalType implements TypeProvider {
+    MAMMAL(Mammal.class);
+
+    private final Class<? extends Animal> type;
+}
+
+@Getter
+@AllArgsConstructor
+enum MammalType implements TypeProvider {
+    HUMAN(Human.class);
+
+    private final Class<? extends Mammal> type;
+}
+```
+
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/MultiHierarchyJsonTypedDeserializerTest.java)
 
 <a name="ParallelHierarchies"></a>
@@ -72,6 +149,32 @@ In case you have multiple hierarchies that reuse the same enum TypeProvider can 
 ### Typeless (present property)
 
 In case you don't want to (or can't - third party API) include type information in json, you can use this approach:
+
+```java
+interface FooBar extends PresentPropertyJsonHierarchy<FooBarType> {
+}
+
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class Foo implements FooBar {
+    private final String foo;
+}
+
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class Bar implements FooBar {
+    private final String bar;
+}
+
+@Getter
+@AllArgsConstructor
+enum FooBarType implements TypeProvider {
+    FOO(Foo.class),
+    BAR(Bar.class);
+
+    private final Class<? extends FooBar> type;
+}
+```
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyDeserializerTest.java).
 
