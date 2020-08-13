@@ -22,7 +22,7 @@ Library which provides new features for (de)serialization on top of [Jackson lib
 
 All examples have corresponding tests and additional usage examples can be found in tests.
 
-#### Spring Boot
+### Spring Boot
 
 Just include the following dependency:
 
@@ -34,7 +34,7 @@ Just include the following dependency:
 </dependency>
 ```
 
-#### Without Spring Boot
+### Without Spring Boot
 
 Include the following dependency:
 
