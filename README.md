@@ -200,6 +200,38 @@ enum FooBarType implements TypeProvider {
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyDeserializerTest.java).
 
+If properties in json are not ignore-case equally with types names in your `TypeProvider`, then you can use `NamedPropertyTypeProvider` with actual json properties instead:
+```java
+    @Getter
+    @AllArgsConstructor
+    enum FooBarType implements NamedPropertyTypeProvider {
+        FOO(NamedFoo.class, "fooProperty"),
+        BAR(NamedBar.class, "barProperty");
+
+        private final Class<? extends NamedFooBar> type;
+        private final String jsonPropertyName;
+    }
+
+    interface NamedFooBar extends PresentPropertyJsonHierarchy<FooBarType> {
+
+    }
+
+    @AllArgsConstructor(onConstructor_ = @JsonCreator)
+    @Value
+    static class NamedFoo implements NamedFooBar {
+
+        private final String fooProperty;
+    }
+
+    @AllArgsConstructor(onConstructor_ = @JsonCreator)
+    @Value
+    static class NamedBar implements NamedFooBar {
+
+        private final String barProperty;
+    }
+``` 
+[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/NamedPresentPropertyDeserializerTest.java).
+
 ## <a name="Requirements"></a> Requirements:
 
 - Java 8
