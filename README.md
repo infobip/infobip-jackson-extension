@@ -200,7 +200,7 @@ enum FooBarType implements TypeProvider {
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyDeserializerTest.java).
 
-If properties in json are not ignore-case equally with types names in your `TypeProvider`, then you can use `NamedPropertyTypeProvider` with actual json properties instead:
+If properties in json are not equal to lowercases types names in your implementation of `TypeProvider`, then you can use `NamedPropertyTypeProvider` interface with actual json properties instead:
 ```java
     @Getter
     @AllArgsConstructor
