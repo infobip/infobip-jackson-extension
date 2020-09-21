@@ -1,46 +1,32 @@
 package com.infobip.jackson;
 
-import java.lang.reflect.Type;
-import java.util.*;
+import com.google.common.base.CaseFormat;
+
+import java.util.Map;
+import java.util.Objects;
 
 public class PresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider> implements JsonTypeResolver {
 
     private final Class<E> type;
+    private final CaseFormat caseFormat;
 
     public PresentPropertyJsonTypeResolver(Class<E> type) {
+        this(type, CaseFormat.LOWER_CAMEL);
+    }
+
+    protected PresentPropertyJsonTypeResolver(Class<E> type, CaseFormat caseFormat) {
         this.type = Objects.requireNonNull(type);
+        this.caseFormat = Objects.requireNonNull(caseFormat);
     }
 
     @Override
     public final Class<?> resolve(Map<String, Object> json) {
         for (E constant : type.getEnumConstants()) {
-            if (json.containsKey(resolvePropertyName(constant))) {
+            if (json.containsKey(CaseFormat.UPPER_UNDERSCORE.to(caseFormat, constant.toString()))) {
                 return constant.getType();
             }
         }
 
         throw new IllegalArgumentException("Failed to resolve type " + json);
-    }
-
-    private String resolvePropertyName(E constant) {
-        for (Type type : getAllInterfaces(constant.getClass())) {
-            if (type.equals(NamedPropertyTypeProvider.class)) {
-                return ((NamedPropertyTypeProvider) constant).getJsonPropertyName();
-            }
-        }
-        return constant.toString().toLowerCase();
-    }
-
-    private List<Type> getAllInterfaces(Class<?> type) {
-        List<Type> allInterfaces = new ArrayList<Type>();
-
-        for (Type anInterface : type.getGenericInterfaces()) {
-            allInterfaces.add(anInterface);
-            if (anInterface instanceof Class<?>) {
-                allInterfaces.addAll(getAllInterfaces((Class<?>) anInterface));
-            }
-        }
-
-        return allInterfaces;
     }
 }

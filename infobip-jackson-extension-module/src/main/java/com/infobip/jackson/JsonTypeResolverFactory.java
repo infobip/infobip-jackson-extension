@@ -26,6 +26,9 @@ public class JsonTypeResolverFactory {
         }
 
         try {
+            if (isSubtypeOf(type, PresentPropertyJsonTypeResolver.class)) {
+                return createSubtypeOfPresentPropertyJsonTypeResolver(type, targetType);
+            }
             return (JsonTypeResolver) getConstructor(type).newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new IllegalArgumentException("Failed to resolve default constructor for " + type, e);
@@ -35,11 +38,11 @@ public class JsonTypeResolverFactory {
     private <E extends Enum<E> & TypeProvider> SimpleJsonTypeResolver<E> createSimpleTypeJsonResolver(Class<?> type) {
         Class<E> enumType = resolveFirstGenericTypeArgument(type, SimpleJsonHierarchy.class);
         String propertyName = Optional.ofNullable(extractAnnotation(type, JsonTypePropertyName.class))
-                                   .map(JsonTypePropertyName::value)
-                                   .orElse(JsonTypePropertyName.DEFAULT_TYPE_PROPERTY_NAME);
+                                      .map(JsonTypePropertyName::value)
+                                      .orElse(JsonTypePropertyName.DEFAULT_TYPE_PROPERTY_NAME);
         boolean upperCase = Optional.ofNullable(extractAnnotation(type, JsonTypePropertyValue.class))
-                                .map(JsonTypePropertyValue::inUpperCase)
-                                .orElse(JsonTypePropertyValue.DEFAULT_IN_UPPER_CASE);
+                                    .map(JsonTypePropertyValue::inUpperCase)
+                                    .orElse(JsonTypePropertyValue.DEFAULT_IN_UPPER_CASE);
         return new SimpleJsonTypeResolver<>(enumType, propertyName, upperCase);
     }
 
@@ -49,8 +52,26 @@ public class JsonTypeResolverFactory {
         return new PresentPropertyJsonTypeResolver<>(enumType);
     }
 
-    private Constructor<?> getConstructor(Class<?> resolved) throws NoSuchMethodException {
-        Constructor<?> constructor = resolved.getDeclaredConstructor();
+    @SuppressWarnings("unchecked")
+    private <E extends Enum<E> & TypeProvider> PresentPropertyJsonTypeResolver<E> createSubtypeOfPresentPropertyJsonTypeResolver(
+            Class<?> resolverType,
+            Class<?> targetType) throws
+            IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+
+        Class<E> enumType = resolveFirstGenericTypeArgument(targetType, PresentPropertyJsonHierarchy.class);
+        for (Constructor<?> cctor : resolverType.getConstructors()) {
+            if (cctor.getParameterCount() == 0) {
+                return (PresentPropertyJsonTypeResolver<E>) getConstructor(resolverType).newInstance();
+            } else if (cctor.getParameterCount() == 1 && cctor.getParameterTypes()[0].equals(Class.class)) {
+                return (PresentPropertyJsonTypeResolver<E>) getConstructor(resolverType, Class.class).newInstance(
+                        enumType);
+            }
+        }
+        throw new IllegalArgumentException("Failed to resolve default constructor for " + resolverType);
+    }
+
+    private Constructor<?> getConstructor(Class<?> resolved, Class<?>... parameterTypes) throws NoSuchMethodException {
+        Constructor<?> constructor = resolved.getDeclaredConstructor(parameterTypes);
 
         if (!constructor.isAccessible()) {
             constructor.setAccessible(true);
@@ -110,5 +131,10 @@ public class JsonTypeResolverFactory {
         }
 
         return allInterfaces;
+    }
+
+    private boolean isSubtypeOf(Class<?> type, Class<?> parentType) {
+        return type.getSuperclass() != null
+                && (type.getSuperclass().equals(parentType) || isSubtypeOf(type.getSuperclass(), parentType));
     }
 }

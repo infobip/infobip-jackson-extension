@@ -173,64 +173,84 @@ In case you have multiple hierarchies that reuse the same enum TypeProvider can 
 In case you don't want to (or can't - third party API) include type information in json, you can use this approach:
 
 ```java
-interface FooBar extends PresentPropertyJsonHierarchy<FooBarType> {
+interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 }
 
 @AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
-static class Foo implements FooBar {
-    private final String foo;
+static class RoadBike implements Bike {
+    private final String roadBike;
 }
 
 @AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
-static class Bar implements FooBar {
-    private final String bar;
+static class Bmx implements Bike {
+    private final String bmx;
 }
 
 @Getter
 @AllArgsConstructor
-enum FooBarType implements TypeProvider {
-    FOO(Foo.class),
-    BAR(Bar.class);
+enum BikeType implements TypeProvider {
+    ROAD_BIKE(RoadBike.class),
+    BMX(Bmx.class);
 
-    private final Class<? extends FooBar> type;
+    private final Class<? extends Bike> type;
 }
 ```
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyDeserializerTest.java).
 
-If properties in json are not equal to lowercases types names in your implementation of `TypeProvider`, then you can use `NamedPropertyTypeProvider` interface with actual json properties instead:
+Notice that by default snake cased type names are translated to camel case properties (e.g. `ROAD_BIKE` -> `roadBike`).
+If you want to use different casing you can provide your own resolver by extending `PresentPropertyJsonTypeResolver`:
 ```java
-    @Getter
-    @AllArgsConstructor
-    enum FooBarType implements NamedPropertyTypeProvider {
-        FOO(NamedFoo.class, "fooProperty"),
-        BAR(NamedBar.class, "barProperty");
+static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider> extends PresentPropertyJsonTypeResolver<E> {
 
-        private final Class<? extends NamedFooBar> type;
-        private final String jsonPropertyName;
+    public LowerUnderscorePresentPropertyJsonTypeResolver(Class<E> type) {
+        super(type, CaseFormat.LOWER_UNDERSCORE);
     }
+}
+```
+Then your model may look as follows:
+```java
+@JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
+interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
-    interface NamedFooBar extends PresentPropertyJsonHierarchy<FooBarType> {
+}
 
-    }
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class RoadBike implements Bike {
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
-    @Value
-    static class NamedFoo implements NamedFooBar {
+    private final String road_bike;
+}
 
-        private final String fooProperty;
-    }
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+static class MountainBike implements Bike {
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
-    @Value
-    static class NamedBar implements NamedFooBar {
+    private final String mountain_bike;
+}
 
-        private final String barProperty;
-    }
+@Getter
+@AllArgsConstructor
+enum BikeType implements TypeProvider {
+    ROAD_BIKE(RoadBike.class),
+    MOUNTAIN_BIKE(MountainBike.class);
+
+    private final Class<? extends Bike> type;
+}
 ``` 
-[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/NamedPresentPropertyDeserializerTest.java).
+Additionally, you can use standard jackson annotations, e.g. `@JsonNaming` to tune your POJO's fields names:
+```java
+@AllArgsConstructor(onConstructor_ = @JsonCreator)
+@Value
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+static class MountainBike implements Bike {
+
+    private final String mountainBike;
+}
+```
+[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyCaseFormatDeserializerTest.java).
 
 ## <a name="Requirements"></a> Requirements:
 
