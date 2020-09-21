@@ -213,6 +213,7 @@ static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & 
 Then your model may look as follows:
 ```java
 @JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
 }
@@ -221,7 +222,7 @@ interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 @Value
 static class RoadBike implements Bike {
 
-    private final String road_bike;
+    private final String roadBike;
 }
 
 @AllArgsConstructor(onConstructor_ = @JsonCreator)
@@ -240,16 +241,8 @@ enum BikeType implements TypeProvider {
     private final Class<? extends Bike> type;
 }
 ``` 
-Additionally, you can use standard jackson annotations, e.g. `@JsonNaming` to tune your POJO's fields names:
-```java
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
-@Value
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-static class MountainBike implements Bike {
+Notice standard jackson `@JsonNaming` annotation in `Bike` interface.  
 
-    private final String mountainBike;
-}
-```
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyCaseFormatDeserializerTest.java).
 
 ## <a name="Requirements"></a> Requirements:

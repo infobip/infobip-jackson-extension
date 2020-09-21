@@ -104,6 +104,7 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
     }
 
     @JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
     }
@@ -120,12 +121,11 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
     @Value
     static class RoadBike implements Bike {
 
-        private final String road_bike;
+        private final String roadBike;
     }
 
     @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
-    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     static class MountainBike implements Bike {
 
         private final String mountainBike;
