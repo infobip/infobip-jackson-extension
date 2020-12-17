@@ -1,6 +1,6 @@
 # Infobip Jackson Extension
 
-[![Build Status](https://travis-ci.org/infobip/infobip-jackson-extension.svg?branch=master)](https://travis-ci.org/infobip/infobip-jackson-extension)
+![](https://github.com/infobip/infobip-jackson-extension/workflows/maven/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.infobip/infobip-jackson-extension-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.infobip/infobip-jackson-extension-spring-boot-starter)
 [![Coverage Status](https://coveralls.io/repos/github/infobip/infobip-jackson-extension/badge.svg?branch=master)](https://coveralls.io/github/infobip/infobip-jackson-extension?branch=master)
 
