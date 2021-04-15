@@ -8,5 +8,6 @@ public class InfobipJacksonModule extends SimpleModule {
     public void setupModule(SetupContext context) {
         super.setupModule(context);
         context.insertAnnotationIntrospector(new InfobipJacksonAnnotationIntrospector());
+        context.insertAnnotationIntrospector(new SingleArgumentPropertiesCreatorModeAnnotationIntrospector());
     }
 }

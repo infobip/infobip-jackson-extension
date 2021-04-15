@@ -1,6 +1,5 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.*;
@@ -103,14 +102,12 @@ class PresentPropertyDeserializerTest extends TestBase {
 
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class RoadBike implements Bike {
 
         private final String roadBike;
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Bmx implements Bike {
 

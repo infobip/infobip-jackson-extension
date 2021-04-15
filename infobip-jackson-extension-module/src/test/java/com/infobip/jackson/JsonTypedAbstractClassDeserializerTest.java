@@ -1,6 +1,5 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
 import org.junit.jupiter.api.Test;
@@ -48,14 +47,12 @@ class JsonTypedAbstractClassDeserializerTest extends TestBase {
         }
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Foo extends FooBar {
         private final String foo;
         private final FooBarType type = FooBarType.FOO;
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Bar extends FooBar {
         private final String bar;

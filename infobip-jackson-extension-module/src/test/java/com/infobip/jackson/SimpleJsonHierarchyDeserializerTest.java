@@ -1,6 +1,5 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.*;
@@ -105,14 +104,12 @@ class SimpleJsonHierarchyDeserializerTest extends TestBase {
     interface FooBar extends SimpleJsonHierarchy<FooBarType> {
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Foo implements FooBar {
         private final String foo;
         private final FooBarType type = FooBarType.FOO;
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Bar implements FooBar {
         private final String bar;

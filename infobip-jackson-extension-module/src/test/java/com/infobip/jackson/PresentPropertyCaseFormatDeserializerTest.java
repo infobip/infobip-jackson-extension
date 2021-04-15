@@ -1,6 +1,5 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -117,14 +116,12 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
         }
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class RoadBike implements Bike {
 
         private final String roadBike;
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class MountainBike implements Bike {
 
