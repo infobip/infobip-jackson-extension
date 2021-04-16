@@ -1,6 +1,7 @@
 package com.infobip.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.*;
@@ -24,6 +25,31 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
 
         // then
         then(actual).isEqualTo(new ClassWithSingleFieldAndOnlySingleParameterConstructor("givenFoo"));
+    }
+
+    @Test
+    void shouldDeserializeClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor() throws JsonProcessingException {
+        // given
+        String givenJson = "{'bar':'givenBar'}";
+
+        // when
+        ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor actual = objectMapper.readValue(givenJson,
+                                                                                                                       ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor.class);
+
+        // then
+        then(actual).isEqualTo(new ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor("givenBar"));
+    }
+
+    @Test
+    void shouldDeserializeClassWithMultipleProperties() throws JsonProcessingException {
+        // given
+        String givenJson = "{'foo':'givenFoo', 'bar':'givenBar'}";
+
+        // when
+        ClassWithMultipleProperties actual = objectMapper.readValue(givenJson, ClassWithMultipleProperties.class);
+
+        // then
+        then(actual).isEqualTo(new ClassWithMultipleProperties("givenFoo", "givenBar"));
     }
 
     @Test
@@ -89,10 +115,24 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
     static class ClassWithSingleFieldAndOnlySingleParameterConstructor {
 
         private final String foo;
+    }
 
-        public ClassWithSingleFieldAndOnlySingleParameterConstructor(String foo) {
-            this.foo = foo;
+    @Value
+    static class ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor {
+
+        @JsonProperty("bar")
+        private final String foo;
+
+        public ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor(String bar) {
+            this.foo = bar;
         }
+    }
+
+    @Value
+    static class ClassWithMultipleProperties {
+
+        private final String foo;
+        private final String bar;
     }
 
     @Value
