@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -38,13 +39,18 @@ public class SingleArgumentPropertiesCreatorModeAnnotationIntrospector extends N
 
     private boolean doesntHaveMatchingFieldAndParameter(AnnotatedConstructor annotatedConstructor,
                                                         Class<?> declaringClass) {
-        String parameterName = annotatedConstructor.getAnnotated().getParameters()[0].getName();
+        Parameter parameter = annotatedConstructor.getAnnotated().getParameters()[0];
         return Stream.of(declaringClass.getDeclaredFields())
-                     .noneMatch(field -> doesFieldMatchParameter(field, parameterName));
+                     .noneMatch(field -> doesFieldMatchParameter(field, parameter));
     }
 
-    private boolean doesFieldMatchParameter(Field field, String parameterName) {
+    private boolean doesFieldMatchParameter(Field field, Parameter parameter) {
 
+        if(!field.getType().equals(parameter.getType())) {
+            return false;
+        }
+
+        String parameterName = parameter.getName();
         JsonProperty annotation = field.getAnnotation(JsonProperty.class);
 
         if (Objects.nonNull(annotation) && annotation.value().equals(parameterName)) {

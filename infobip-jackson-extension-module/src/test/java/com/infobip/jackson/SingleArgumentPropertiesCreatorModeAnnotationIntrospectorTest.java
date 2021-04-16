@@ -96,6 +96,21 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
     }
 
     @Test
+    void shouldFailToDeserializeClassWithMismatchingParameterType() {
+        // given
+        String givenJson = "{'foo':1}";
+
+        // when
+        Throwable actual = BDDAssertions.catchThrowable(
+                () -> objectMapper.readValue(givenJson, ClassWithMismatchingParameterType.class));
+
+        // then
+        then(actual).isInstanceOf(MismatchedInputException.class)
+                    .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMismatchingParameterType` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
+                                        " at [Source: (String)\"{'foo':1}\"; line: 1, column: 2]");
+    }
+
+    @Test
     void shouldFailToDeserializeClassWithMismatchingParameterName() {
         // given
         String givenJson = "{'foo':'givenFooBar'}";
@@ -165,6 +180,15 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
 
         public ClassWithMultipleConstructors(Integer bar) {
             this.foo = null;
+        }
+    }
+
+    static class ClassWithMismatchingParameterType {
+
+        private final String foo;
+
+        public ClassWithMismatchingParameterType(Integer foo) {
+            this.foo = foo.toString();
         }
     }
 
