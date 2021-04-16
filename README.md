@@ -16,6 +16,7 @@ Library which provides new features for (de)serialization on top of [Jackson lib
     * [Multi level hierarchies](#MultiLevelHierarchies)
     * [Parallel hierarchies](#ParallelHierarchies)
     * [Typeless (present property)](#Typeless)
+    * [Single Argument Property Creator annotationless support](#SingleArgumentPropertyCreatorAnnotationlessSupport)
     
 <a name="Setup"></a>
 ## Setup
@@ -244,6 +245,24 @@ enum BikeType implements TypeProvider {
 Notice standard jackson `@JsonNaming` annotation in `Bike` interface.  
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyCaseFormatDeserializerTest.java).
+
+<a name="SingleArgumentPropertyCreatorAnnotationlessSupport"></a>
+### Single Argument Property Creator annotationless support
+
+This module also adds support for deserializing single property value objects when using parameter names module:
+
+```java
+class Foo {
+    private final Bar bar;
+
+    Foo(Bar bar) {
+        this.bar = bar;
+    }
+}
+```
+
+without any additional configuration or annotations.
+Related issues: https://github.com/FasterXML/jackson-databind/issues/1498, https://github.com/spring-projects/spring-boot/issues/26023.
 
 ## <a name="Requirements"></a> Requirements:
 
