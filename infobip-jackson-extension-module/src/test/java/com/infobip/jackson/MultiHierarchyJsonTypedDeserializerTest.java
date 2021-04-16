@@ -1,6 +1,5 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.*;
@@ -123,7 +122,6 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
         }
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Human implements Mammal {
         private final String name;

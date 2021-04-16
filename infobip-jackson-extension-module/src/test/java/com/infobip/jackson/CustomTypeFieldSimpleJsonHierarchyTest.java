@@ -110,14 +110,12 @@ class CustomTypeFieldSimpleJsonHierarchyTest extends TestBase {
         FooBarType getType();
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Foo implements FooBar {
         private final String foo;
         private final FooBarType type = FooBarType.FOO;
     }
 
-    @AllArgsConstructor(onConstructor_ = @JsonCreator)
     @Value
     static class Bar implements FooBar {
         private final String bar;
