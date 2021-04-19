@@ -66,14 +66,12 @@ For models that have a type represented by an enum you can use simple typed json
 interface FooBar extends SimpleJsonHierarchy<FooBarType> {
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class Foo implements FooBar {
     private final String foo;
     private final FooBarType type = FooBarType.FOO;
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class Bar implements FooBar {
     private final String bar;
@@ -135,7 +133,6 @@ static class MammalJsonTypeResolver extends SimpleJsonTypeResolver<MammalType> {
     }
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class Human implements Mammal {
     private final String name;
@@ -178,13 +175,11 @@ In case you don't want to (or can't - third party API) include type information 
 interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class RoadBike implements Bike {
     private final String roadBike;
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class Bmx implements Bike {
     private final String bmx;
@@ -220,14 +215,12 @@ interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class RoadBike implements Bike {
 
     private final String roadBike;
 }
 
-@AllArgsConstructor(onConstructor_ = @JsonCreator)
 @Value
 static class MountainBike implements Bike {
 
