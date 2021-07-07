@@ -4,7 +4,7 @@
 
 	<groupId>com.infobip</groupId>
 	<artifactId>infobip-jackson-extension</artifactId>
-	<version>1.3.0</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Infobip Jackson Extension</name>
