@@ -130,6 +130,9 @@ public class JsonTypeResolverFactory {
             }
         }
 
+        Optional.ofNullable(type.getGenericSuperclass())
+                .ifPresent(superClass -> allInterfaces.addAll(getAllInterfaces((Class<?>) superClass)));
+
         return allInterfaces;
     }
 
