@@ -4,7 +4,7 @@
 
 	<groupId>com.infobip</groupId>
 	<artifactId>infobip-jackson-extension</artifactId>
-	<version>1.3.1-SNAPSHOT</version>
+	<version>1.3.0</version>
 	<packaging>pom</packaging>
 
 	<name>Infobip Jackson Extension</name>
@@ -33,7 +33,7 @@
 		<url>https://github.com/infobip/infobip-jackson-extension.git</url>
 		<connection>scm:git:git://github.com:infobip/infobip-jackson-extension.git</connection>
 		<developerConnection>scm:git:git@github.com:infobip/infobip-jackson-extension.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>infobip-jackson-extension-1.3.0</tag>
   </scm>
 
 	<developers>
