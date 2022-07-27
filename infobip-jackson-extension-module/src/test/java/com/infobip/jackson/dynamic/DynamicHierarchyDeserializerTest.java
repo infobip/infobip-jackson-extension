@@ -25,7 +25,7 @@ class DynamicHierarchyDeserializerTest extends TestBase {
             new JsonValueToJavaTypeJacksonMapping<>(FooBarType.BAR.name(), Bar.class),
             new JsonValueToJavaTypeJacksonMapping<>(FooBarType.FOO.name(), Foo.class));
 
-        DynamicHierarchyDeserializer<FooBar> deserializer = new DynamicHierarchyDeserializer<>(jsonValueToJavaTypeJacksonMappings);
+        DynamicHierarchyDeserializer<FooBar> deserializer = new DynamicHierarchyDeserializer<>(FooBar.class, jsonValueToJavaTypeJacksonMappings);
         module.addDeserializer(FooBar.class, deserializer);
         this.objectMapper.registerModule(module);
     }
@@ -146,13 +146,4 @@ class DynamicHierarchyDeserializerTest extends TestBase {
         FOO,
         BAR;
     }
-
-    static class FooBarDeserializer extends DynamicHierarchyDeserializer<FooBar> {
-
-        public FooBarDeserializer(List<JsonValueToJavaTypeJacksonMapping<FooBar>> jsonValueToJavaTypeJacksonMappings) {
-            super(jsonValueToJavaTypeJacksonMappings);
-        }
-
-    }
-
 }
