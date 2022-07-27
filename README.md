@@ -18,6 +18,7 @@ Library which provides new features for (de)serialization on top of [Jackson lib
     * [Multi level hierarchies](#MultiLevelHierarchies)
     * [Parallel hierarchies](#ParallelHierarchies)
     * [Typeless (present property)](#Typeless)
+    * [Dynamic hierarchy](#DynamicHierarchy)
     * [Single Argument Property Creator annotationless support](#SingleArgumentPropertyCreatorAnnotationlessSupport)
 
 ## <a name="Changelog"></a> Changelog
@@ -244,6 +245,18 @@ enum BikeType implements TypeProvider {
 Notice standard jackson `@JsonNaming` annotation in `Bike` interface.  
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyCaseFormatDeserializerTest.java).
+
+<a name="DynamicHierarchy"></a>
+### Dynamic hierarchy
+
+In case root of the hierarchy is decoupled from the leaves in different compilation units.
+Also it can be seen as annotationless alternative.
+
+[Showcase without type provider](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/dynamic/DynamicHierarchyDeserializerTest.java).
+
+[Showcase with type provider](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/dynamic/DynamicHierarchyDeserializerWithTypeProviderTest.java).
+
+In case Spring Boot starter is used you only need to register DynamicHierarchyDeserializer as a @Bean, starter handles wiring with Jackson.
 
 <a name="SingleArgumentPropertyCreatorAnnotationlessSupport"></a>
 ### Single Argument Property Creator annotationless support
