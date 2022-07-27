@@ -9,8 +9,9 @@ Library which provides new features for (de)serialization on top of [Jackson lib
 
 ## Contents
 
-* [Setup](#Setup)
-* [Features](#Features)
+1. [Changelog](#Changelog)
+1. [Setup](#Setup)
+1. [Features](#Features)
     * [Simple json hierarchy](#SimpleJsonHierarchy)
     * [Overriding type json property name](#OverridingTypeJsonPropertyName)
     * [Lower case type value](#LowerCaseTypeValue)
@@ -18,7 +19,11 @@ Library which provides new features for (de)serialization on top of [Jackson lib
     * [Parallel hierarchies](#ParallelHierarchies)
     * [Typeless (present property)](#Typeless)
     * [Single Argument Property Creator annotationless support](#SingleArgumentPropertyCreatorAnnotationlessSupport)
-    
+
+## <a name="Changelog"></a> Changelog
+
+For changes check the [changelog](CHANGELOG.md).
+
 <a name="Setup"></a>
 ## Setup
 

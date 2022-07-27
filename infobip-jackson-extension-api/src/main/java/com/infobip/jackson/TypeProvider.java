@@ -1,6 +1,6 @@
 package com.infobip.jackson;
 
-public interface TypeProvider {
+public interface TypeProvider<T> {
 
-    Class<?> getType();
+    Class<? extends T> getType();
 }
