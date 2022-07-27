@@ -18,9 +18,9 @@ import com.infobip.jackson.TypeProvider;
 
 public class DynamicHierarchyDeserializer<T> extends JsonDeserializer<T> {
 
-    final Class<T> hierarchyRootType;
-    final Map<String, Class<? extends T>> jsonValueToJavaType;
-    final String jsonValuePropertyName;
+    private final Class<T> hierarchyRootType;
+    private final Map<String, Class<? extends T>> jsonValueToJavaType;
+    private final String jsonValuePropertyName;
 
     public DynamicHierarchyDeserializer(Class<T> hierarchyRootType, List<JsonValueToJavaTypeJacksonMapping<T>> mappings) {
         this(hierarchyRootType, mappings, "type");
@@ -79,6 +79,14 @@ public class DynamicHierarchyDeserializer<T> extends JsonDeserializer<T> {
 
     public Class<T> getHierarchyRootType() {
         return hierarchyRootType;
+    }
+
+    public Map<String, Class<? extends T>> getJsonValueToJavaType() {
+        return jsonValueToJavaType;
+    }
+
+    public String getJsonValuePropertyName() {
+        return jsonValuePropertyName;
     }
 
 }
