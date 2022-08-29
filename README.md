@@ -30,7 +30,7 @@ For changes check the [changelog](CHANGELOG.md).
 
 All examples have corresponding tests and additional usage examples can be found in tests.
 
-In examples and tests it's assumed that the code is compiled with `-parameters` compiler option and `jackson-module-parameter-names` module is used.
+In examples, tests and [Single Argument Property Creator annotationless support](#SingleArgumentPropertyCreatorAnnotationlessSupport) it's required that the code is compiled with `-parameters` compiler option and `jackson-module-parameter-names` module is used.
 
 Parameter names module:
 ```xml
