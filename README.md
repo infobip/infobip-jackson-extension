@@ -30,6 +30,34 @@ For changes check the [changelog](CHANGELOG.md).
 
 All examples have corresponding tests and additional usage examples can be found in tests.
 
+In examples and tests it's assumed that the code is compiled with `-parameters` compiler option and `jackson-module-parameter-names` module is used.
+
+Parameter names module:
+```xml
+<dependency>
+   <groupId>com.fasterxml.jackson.module</groupId>
+   <artifactId>jackson-module-parameter-names</artifactId>
+</dependency>
+```
+
+Compiler plugin setup:
+```xml
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<version>${maven-compiler-plugin.version}</version>
+	<configuration>
+       ...
+		<compilerArgument>-parameters</compilerArgument>
+		<testCompilerArgument>-parameters</testCompilerArgument>
+       ...
+	</configuration>
+</plugin>
+```
+
+Parameter names module makes parameter names visible to the Jackson meaning it can map json properties to constructor parameter names so there's no redundant 
+Jackson annotation to redeclare them. There's an important catch here: JSON field name, Java accessors and constructor parameter name all must match!
+
 ### Spring Boot
 
 Just include the following dependency:
