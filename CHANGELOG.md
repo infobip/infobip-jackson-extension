@@ -1,3 +1,6 @@
+### 2.1.0
+* Added support for default types in TypeProvider
+
 ### 2.0.0
 
 * Added DynamicHierarchyDeserializer
