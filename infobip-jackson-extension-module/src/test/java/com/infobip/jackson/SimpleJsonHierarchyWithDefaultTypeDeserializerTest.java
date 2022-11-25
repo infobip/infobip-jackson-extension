@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
-import lombok.var;
 import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
