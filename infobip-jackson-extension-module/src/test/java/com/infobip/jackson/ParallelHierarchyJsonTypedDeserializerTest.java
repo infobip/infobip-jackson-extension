@@ -162,7 +162,7 @@ class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
         }
     }
 
-    static class InboundSmsMessage implements InboundMessage {
+    record InboundSmsMessage() implements InboundMessage {
         @Override
         public Channel getChannel() {
             return Channel.SMS;
@@ -174,7 +174,7 @@ class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
         }
     }
 
-    static class OutboundSmsMessage implements OutboundMessage {
+    record OutboundSmsMessage() implements OutboundMessage {
         @Override
         public Channel getChannel() {
             return Channel.SMS;

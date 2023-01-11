@@ -5,10 +5,9 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.base.CaseFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -104,12 +103,11 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
     }
 
     @JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
-    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
     }
 
-    static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider>
+    static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider<E>>
             extends PresentPropertyJsonTypeResolver<E> {
 
         public LowerUnderscorePresentPropertyJsonTypeResolver(Class<E> type) {
@@ -117,11 +115,11 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
         }
     }
 
-    record RoadBike(String roadBike) implements Bike {
+    record RoadBike(@JsonProperty("road_bike") String roadBike) implements Bike {
 
     }
 
-    record MountainBike(String mountainBike) implements Bike {
+    record MountainBike(@JsonProperty("mountain_bike") String mountainBike) implements Bike {
 
     }
 
