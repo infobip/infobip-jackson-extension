@@ -21,7 +21,8 @@ Library which provides new features for (de)serialization on top of [Jackson lib
     * [Dynamic hierarchy](#DynamicHierarchy)
     * [Single Argument Property Creator annotationless support](#SingleArgumentPropertyCreatorAnnotationlessSupport)
 
-## <a id="Changelog"></a> Changelog
+<a id="Changelog"></a>
+## Changelog
 
 For changes check the [changelog](CHANGELOG.md).
 
