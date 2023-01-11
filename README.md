@@ -21,11 +21,11 @@ Library which provides new features for (de)serialization on top of [Jackson lib
     * [Dynamic hierarchy](#DynamicHierarchy)
     * [Single Argument Property Creator annotationless support](#SingleArgumentPropertyCreatorAnnotationlessSupport)
 
-## <a name="Changelog"></a> Changelog
+## <a id="Changelog"></a> Changelog
 
 For changes check the [changelog](CHANGELOG.md).
 
-<a name="Setup"></a>
+<a id="Setup"></a>
 ## Setup
 
 All examples have corresponding tests and additional usage examples can be found in tests.
@@ -89,10 +89,10 @@ Register the module with `ObjectMapper`:
 objectMapper.registerModule(new InfobipJacksonModule());     
 ```
 
-<a name="Features"></a>
+<a id="Features"></a>
 ## Features
 
-<a name="SimpleJsonHierarchy"></a>
+<a id="SimpleJsonHierarchy"></a>
 ### Simple json hierarchy
 
 For models that have a type represented by an enum you can use simple typed json approach:
@@ -131,21 +131,21 @@ enum FooBarType implements TypeProvider<FooBar> {
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/SimpleJsonHierarchyDeserializerTest.java)
 
-<a name="OverridingTypeJsonPropertyName"></a>
+<a id="OverridingTypeJsonPropertyName"></a>
 #### Overriding type json property name
 
 Name of the property can be overridden:
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/CustomTypeFieldSimpleJsonHierarchyTest.java)
 
-<a name="LowerCaseTypeValue"></a>
+<a id="LowerCaseTypeValue"></a>
 #### Lower case type value
 
 Casing of the property type value can be overridden:
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/LowerCaseTypeSimpleJsonHierarchyTest.java)
 
-<a name="MultiLevelHierarchies"></a>
+<a id="MultiLevelHierarchies"></a>
 ### Multi level hierarchies
 
 If you have multiple levels of hierarchy following approach can be used:
@@ -207,14 +207,14 @@ enum MammalType implements TypeProvider<Mammal> {
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/MultiHierarchyJsonTypedDeserializerTest.java)
 
-<a name="ParallelHierarchies"></a>
+<a id="ParallelHierarchies"></a>
 ### Parallel hierarchies
 
 In case you have multiple hierarchies that reuse the same enum TypeProvider can present an issue, use this approach to as a guide to possible solution:
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/ParallelHierarchyJsonTypedDeserializerTest.java).
 
-<a name="Typeless"></a>
+<a id="Typeless"></a>
 ### Typeless (present property)
 
 In case you don't want to (or can't - third party API) include type information in json, you can use this approach:
@@ -278,7 +278,7 @@ Notice standard jackson `@JsonNaming` annotation in `Bike` interface.
 
 [Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/PresentPropertyCaseFormatDeserializerTest.java).
 
-<a name="DynamicHierarchy"></a>
+<a id="DynamicHierarchy"></a>
 ### Dynamic hierarchy
 
 In case root of the hierarchy is decoupled from the leaves in different compilation units.
@@ -290,7 +290,7 @@ Also it can be seen as annotationless alternative.
 
 In case Spring Boot starter is used you only need to register DynamicHierarchyDeserializer as a @Bean, starter handles wiring with Jackson.
 
-<a name="SingleArgumentPropertyCreatorAnnotationlessSupport"></a>
+<a id="SingleArgumentPropertyCreatorAnnotationlessSupport"></a>
 ### Single Argument Property Creator annotationless support
 
 This module also adds support for deserializing single property value objects when using parameter names module:
@@ -308,16 +308,16 @@ class Foo {
 without any additional configuration or annotations.
 Related issues: https://github.com/FasterXML/jackson-databind/issues/1498, https://github.com/spring-projects/spring-boot/issues/26023.
 
-## <a name="Requirements"></a> Requirements:
+## <a id="Requirements"></a> Requirements:
 
 - Java 17
 
-## <a name="Contributing"></a> Contributing
+## <a id="Contributing"></a> Contributing
 
 If you have an idea for a new feature or want to report a bug please use the issue tracker.
 
 Pull requests are welcome!
 
-## <a name="License"></a> License
+## <a id="License"></a> License
 
 This library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
