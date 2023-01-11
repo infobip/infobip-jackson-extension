@@ -101,31 +101,29 @@ For models that have a type represented by an enum you can use simple typed json
 interface FooBar extends SimpleJsonHierarchy<FooBarType> {
 }
 
-@Value
-static class Foo implements FooBar {
-    private final String foo;
-    
-        public FooBarType getType() {
-            return FooBarType.FOO;
-        }
+record Foo(String foo) implements FooBar {
+
+   public FooBarType getType() {
+      return FooBarType.FOO;
+   }
+
 }
 
-@Value
-static class Bar implements FooBar {
-    private final String bar;
-    
-        public FooBarType getType() {
-            return FooBarType.BAR;
-        }
+record Bar(String bar) implements FooBar {
+
+   public FooBarType getType() {
+      return FooBarType.BAR;
+   }
+
 }
 
 @Getter
 @AllArgsConstructor
-enum FooBarType implements TypeProvider {
-    FOO(Foo.class),
-    BAR(Bar.class);
+enum FooBarType implements TypeProvider<FooBar> {
+   FOO(Foo.class),
+   BAR(Bar.class);
 
-    private final Class<? extends FooBar> type;
+   private final Class<? extends FooBar> type;
 }
 ```
 
@@ -174,27 +172,34 @@ static class MammalJsonTypeResolver extends SimpleJsonTypeResolver<MammalType> {
     }
 }
 
-@Value
-static class Human implements Mammal {
-    private final String name;
-    private final AnimalType animalType = AnimalType.MAMMAL;
-    private final MammalType mammalType = MammalType.HUMAN;
+record Human(String name) implements Mammal {
+
+   @Override
+   public AnimalType getAnimalType() {
+      return AnimalType.MAMMAL;
+   }
+
+   @Override
+   public MammalType getMammalType() {
+      return MammalType.HUMAN;
+   }
+
 }
 
 @Getter
 @AllArgsConstructor
-enum AnimalType implements TypeProvider {
-    MAMMAL(Mammal.class);
+enum AnimalType implements TypeProvider<Animal> {
+   MAMMAL(Mammal.class);
 
-    private final Class<? extends Animal> type;
+   private final Class<? extends Animal> type;
 }
 
 @Getter
 @AllArgsConstructor
-enum MammalType implements TypeProvider {
-    HUMAN(Human.class);
+enum MammalType implements TypeProvider<Mammal> {
+   HUMAN(Human.class);
 
-    private final Class<? extends Mammal> type;
+   private final Class<? extends Mammal> type;
 }
 ```
 
@@ -216,23 +221,19 @@ In case you don't want to (or can't - third party API) include type information 
 interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 }
 
-@Value
-static class RoadBike implements Bike {
-    private final String roadBike;
+record RoadBike(String roadBike) implements Bike {
 }
 
-@Value
-static class Bmx implements Bike {
-    private final String bmx;
+record Bmx(String bmx) implements Bike {
 }
 
 @Getter
 @AllArgsConstructor
-enum BikeType implements TypeProvider {
-    ROAD_BIKE(RoadBike.class),
-    BMX(Bmx.class);
+enum BikeType implements TypeProvider<Bike> {
+   ROAD_BIKE(RoadBike.class),
+   BMX(Bmx.class);
 
-    private final Class<? extends Bike> type;
+   private final Class<? extends Bike> type;
 }
 ```
 
@@ -248,33 +249,27 @@ static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & 
     }
 }
 ```
-Then your model may look as follows:
+Then your model may look as follows (note that there's a [bug](https://github.com/FasterXML/jackson-databind/issues/2992) with @JsonNaming and records in jackson):
 ```java
 @JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
 }
 
-@Value
-static class RoadBike implements Bike {
+static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider<E>>
+        extends PresentPropertyJsonTypeResolver<E> {
 
-    private final String roadBike;
+   public LowerUnderscorePresentPropertyJsonTypeResolver(Class<E> type) {
+      super(type, CaseFormat.LOWER_UNDERSCORE);
+   }
 }
 
-@Value
-static class MountainBike implements Bike {
+record RoadBike(@JsonProperty("road_bike") String roadBike) implements Bike {
 
-    private final String mountain_bike;
 }
 
-@Getter
-@AllArgsConstructor
-enum BikeType implements TypeProvider {
-    ROAD_BIKE(RoadBike.class),
-    MOUNTAIN_BIKE(MountainBike.class);
+record MountainBike(@JsonProperty("mountain_bike") String mountainBike) implements Bike {
 
-    private final Class<? extends Bike> type;
 }
 ``` 
 Notice standard jackson `@JsonNaming` annotation in `Bike` interface.  

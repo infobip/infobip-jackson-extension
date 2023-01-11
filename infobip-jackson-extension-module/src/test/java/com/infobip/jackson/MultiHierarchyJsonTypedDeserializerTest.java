@@ -132,17 +132,17 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
 
     record Human(String name) implements Mammal {
 
-            @Override
-            public AnimalType getAnimalType() {
-                return AnimalType.MAMMAL;
-            }
-
-            @Override
-            public MammalType getMammalType() {
-                return MammalType.HUMAN;
-            }
-
+        @Override
+        public AnimalType getAnimalType() {
+            return AnimalType.MAMMAL;
         }
+
+        @Override
+        public MammalType getMammalType() {
+            return MammalType.HUMAN;
+        }
+
+    }
 
     @Getter
     @AllArgsConstructor
