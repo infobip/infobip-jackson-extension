@@ -310,7 +310,7 @@ Related issues: https://github.com/FasterXML/jackson-databind/issues/1498, https
 
 ## <a name="Requirements"></a> Requirements:
 
-- Java 8
+- Java 17
 
 ## <a name="Contributing"></a> Contributing
 
