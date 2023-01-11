@@ -110,6 +110,7 @@ class LowerCaseTypeSimpleJsonHierarchyTest extends TestBase {
 
     record Foo(String foo) implements FooBar {
 
+        @Override
         public FooBarType getType() {
                 return FooBarType.FOO;
             }
@@ -118,6 +119,7 @@ class LowerCaseTypeSimpleJsonHierarchyTest extends TestBase {
 
     record Bar(String bar) implements FooBar {
 
+        @Override
         public FooBarType getType() {
                 return FooBarType.BAR;
             }

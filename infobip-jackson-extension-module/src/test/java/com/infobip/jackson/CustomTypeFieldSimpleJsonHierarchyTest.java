@@ -88,7 +88,7 @@ class CustomTypeFieldSimpleJsonHierarchyTest extends TestBase {
         // then
         then(actual).isInstanceOf(IllegalArgumentException.class)
                     .hasMessage(
-                            "No enum constant " + getClass().getName() + ".FooBarType.baz");
+                        "No enum constant " + getClass().getName() + ".FooBarType.baz");
     }
 
     @Test
@@ -105,24 +105,28 @@ class CustomTypeFieldSimpleJsonHierarchyTest extends TestBase {
 
     @JsonTypePropertyName(value = "fooBarType")
     interface FooBar extends SimpleJsonHierarchy<FooBarType> {
+
         @JsonProperty("fooBarType")
         @Override
         FooBarType getType();
+
     }
 
     record Foo(String foo) implements FooBar {
 
+        @Override
         public FooBarType getType() {
-                return FooBarType.FOO;
-            }
+            return FooBarType.FOO;
+        }
 
     }
 
     record Bar(String bar) implements FooBar {
 
+        @Override
         public FooBarType getType() {
-                return FooBarType.BAR;
-            }
+            return FooBarType.BAR;
+        }
 
     }
 
@@ -134,4 +138,5 @@ class CustomTypeFieldSimpleJsonHierarchyTest extends TestBase {
 
         private final Class<? extends FooBar> type;
     }
+
 }

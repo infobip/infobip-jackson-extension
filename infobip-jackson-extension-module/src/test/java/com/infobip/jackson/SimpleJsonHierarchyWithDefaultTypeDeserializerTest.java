@@ -15,7 +15,7 @@ class SimpleJsonHierarchyWithDefaultTypeDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeToDefaultType() throws JsonProcessingException {
         // given
-        String json ="{'foo':'foo'}";
+        String json = "{'foo':'foo'}";
 
         // when
         var actual = objectMapper.readValue(json, FooBar.class);
@@ -25,21 +25,24 @@ class SimpleJsonHierarchyWithDefaultTypeDeserializerTest extends TestBase {
     }
 
     interface FooBar extends SimpleJsonHierarchy<FooBarType> {
+
     }
 
     record Foo(String foo) implements FooBar {
 
+        @Override
         public FooBarType getType() {
-                return FooBarType.FOO;
-            }
+            return FooBarType.FOO;
+        }
 
     }
 
     record Bar(String bar) implements FooBar {
 
+        @Override
         public FooBarType getType() {
-                return FooBarType.BAR;
-            }
+            return FooBarType.BAR;
+        }
 
     }
 
@@ -56,4 +59,5 @@ class SimpleJsonHierarchyWithDefaultTypeDeserializerTest extends TestBase {
             return Optional.of(Foo.class);
         }
     }
+
 }

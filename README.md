@@ -103,6 +103,7 @@ interface FooBar extends SimpleJsonHierarchy<FooBarType> {
 
 record Foo(String foo) implements FooBar {
 
+   @Override
    public FooBarType getType() {
       return FooBarType.FOO;
    }
@@ -111,6 +112,7 @@ record Foo(String foo) implements FooBar {
 
 record Bar(String bar) implements FooBar {
 
+   @Override
    public FooBarType getType() {
       return FooBarType.BAR;
    }

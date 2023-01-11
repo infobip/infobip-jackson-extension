@@ -107,6 +107,7 @@ class SimpleJsonHierarchyDeserializerTest extends TestBase {
 
     record Foo(String foo) implements FooBar {
 
+        @Override
         public FooBarType getType() {
                 return FooBarType.FOO;
             }
@@ -115,6 +116,7 @@ class SimpleJsonHierarchyDeserializerTest extends TestBase {
 
     record Bar(String bar) implements FooBar {
 
+        @Override
         public FooBarType getType() {
                 return FooBarType.BAR;
             }
