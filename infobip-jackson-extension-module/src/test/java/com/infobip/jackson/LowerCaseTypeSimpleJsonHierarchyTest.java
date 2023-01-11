@@ -1,16 +1,17 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class LowerCaseTypeSimpleJsonHierarchyTest extends TestBase {
@@ -107,21 +108,25 @@ class LowerCaseTypeSimpleJsonHierarchyTest extends TestBase {
         FooBarType getType();
     }
 
-    @Value
-    static class Foo implements FooBar {
-        private final String foo;
-        private final FooBarType type = FooBarType.FOO;
+    record Foo(String foo) implements FooBar {
+
+        public FooBarType getType() {
+                return FooBarType.FOO;
+            }
+
     }
 
-    @Value
-    static class Bar implements FooBar {
-        private final String bar;
-        private final FooBarType type = FooBarType.BAR;
+    record Bar(String bar) implements FooBar {
+
+        public FooBarType getType() {
+                return FooBarType.BAR;
+            }
+
     }
 
     @Getter
     @AllArgsConstructor
-    enum FooBarType implements TypeProvider {
+    enum FooBarType implements TypeProvider<FooBar> {
         FOO(Foo.class),
         BAR(Bar.class);
 

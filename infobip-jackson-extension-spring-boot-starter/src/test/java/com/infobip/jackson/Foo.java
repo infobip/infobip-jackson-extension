@@ -1,11 +1,6 @@
 package com.infobip.jackson;
 
-import lombok.Value;
-
-@Value
-public class Foo implements FooBar {
-
-    private final String foo;
+public record Foo(String foo) implements FooBar {
 
     @Override
     public FooBarType getType() {

@@ -1,14 +1,15 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestBase {
@@ -16,7 +17,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeHumanAsAnimalFromJson() throws JsonProcessingException {
         // given
-        String json ="{'type':'HUMAN','name':'givenName'}";
+        String json = "{'type':'HUMAN','name':'givenName'}";
 
         // when
         Animal actual = objectMapper.readValue(json, Animal.class);
@@ -28,7 +29,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeHumanAsAnimalFromSerializedHuman() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(new Human("givenName"));
+        String json = objectMapper.writeValueAsString(new Human("givenName"));
 
         // when
         Animal actual = objectMapper.readValue(json, Animal.class);
@@ -40,7 +41,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeHumanAsMammalFromJson() throws JsonProcessingException {
         // given
-        String json ="{'type':'HUMAN','name':'givenName'}";
+        String json = "{'type':'HUMAN','name':'givenName'}";
 
         // when
         Mammal actual = objectMapper.readValue(json, Mammal.class);
@@ -52,7 +53,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeHumanAsMammalFromSerializedHuman() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(new Human("givenName"));
+        String json = objectMapper.writeValueAsString(new Human("givenName"));
 
         // when
         Mammal actual = objectMapper.readValue(json, Mammal.class);
@@ -64,7 +65,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeListOfAnimals() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
+        String json = objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
 
         // when
         List<Animal> actual = objectMapper.readValue(json, new TypeReference<List<Animal>>() {
@@ -77,7 +78,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeListOfMammals() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
+        String json = objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
 
         // when
         List<Mammal> actual = objectMapper.readValue(json, new TypeReference<List<Mammal>>() {
@@ -90,7 +91,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     @Test
     void shouldDeserializeHumanAsHumanFromJson() throws JsonProcessingException {
         // given
-        String json ="{'animalType':'HUMAN','name':'givenName'}";
+        String json = "{'animalType':'HUMAN','name':'givenName'}";
 
         // when
         Human actual = objectMapper.readValue(json, Human.class);
@@ -99,27 +100,29 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
         then(actual).isEqualTo(new Human("givenName"));
     }
 
-    static abstract class Animal implements SimpleJsonHierarchy<AnimalType> {
+    interface Animal extends SimpleJsonHierarchy<AnimalType> {
+
     }
 
-    static abstract class Mammal extends Animal {
+    interface Mammal extends Animal {
+
     }
 
-    @Value
-    static class Human extends Mammal {
-        private final String name;
+    record Human(String name) implements Mammal {
 
         @Override
         public AnimalType getType() {
             return AnimalType.HUMAN;
         }
+
     }
 
     @Getter
     @AllArgsConstructor
-    enum AnimalType implements TypeProvider {
+    enum AnimalType implements TypeProvider<Animal> {
         HUMAN(Human.class);
 
         private final Class<? extends Animal> type;
     }
+
 }

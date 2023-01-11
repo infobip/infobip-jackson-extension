@@ -1,17 +1,18 @@
 package com.infobip.jackson;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.base.CaseFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
 class PresentPropertyCaseFormatDeserializerTest extends TestBase {
@@ -116,21 +117,17 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
         }
     }
 
-    @Value
-    static class RoadBike implements Bike {
+    record RoadBike(String roadBike) implements Bike {
 
-        private final String roadBike;
     }
 
-    @Value
-    static class MountainBike implements Bike {
+    record MountainBike(String mountainBike) implements Bike {
 
-        private final String mountainBike;
     }
 
     @Getter
     @AllArgsConstructor
-    enum BikeType implements TypeProvider {
+    enum BikeType implements TypeProvider<Bike> {
         ROAD_BIKE(RoadBike.class),
         MOUNTAIN_BIKE(MountainBike.class);
 

@@ -104,13 +104,19 @@ interface FooBar extends SimpleJsonHierarchy<FooBarType> {
 @Value
 static class Foo implements FooBar {
     private final String foo;
-    private final FooBarType type = FooBarType.FOO;
+    
+        public FooBarType getType() {
+            return FooBarType.FOO;
+        }
 }
 
 @Value
 static class Bar implements FooBar {
     private final String bar;
-    private final FooBarType type = FooBarType.BAR;
+    
+        public FooBarType getType() {
+            return FooBarType.BAR;
+        }
 }
 
 @Getter

@@ -1,14 +1,17 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class JsonTypedDeserializerTest extends TestBase {
@@ -112,16 +115,20 @@ class JsonTypedDeserializerTest extends TestBase {
         }
     }
 
-    @Value
-    static class Foo implements FooBar {
-        private final String foo;
-        private final FooBarType type = FooBarType.FOO;
+    record Foo(String foo) implements FooBar {
+
+        public FooBarType getType() {
+                return FooBarType.FOO;
+            }
+
     }
 
-    @Value
-    static class Bar implements FooBar {
-        private final String bar;
-        private final FooBarType type = FooBarType.BAR;
+    record Bar(String bar) implements FooBar {
+
+        public FooBarType getType() {
+                return FooBarType.BAR;
+            }
+
     }
 
     @Getter

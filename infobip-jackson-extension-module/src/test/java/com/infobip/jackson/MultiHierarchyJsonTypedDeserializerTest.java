@@ -1,14 +1,15 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
@@ -16,7 +17,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeHumanAsAnimalFromJson() throws JsonProcessingException {
         // given
-        String json ="{'animalType':'MAMMAL','mammalType':'HUMAN','name':'givenName'}";
+        String json = "{'animalType':'MAMMAL','mammalType':'HUMAN','name':'givenName'}";
 
         // when
         Animal actual = objectMapper.readValue(json, Animal.class);
@@ -28,7 +29,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeHumanAsAnimalFromSerializedHuman() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(new Human("givenName"));
+        String json = objectMapper.writeValueAsString(new Human("givenName"));
 
         // when
         Animal actual = objectMapper.readValue(json, Animal.class);
@@ -40,7 +41,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeHumanAsMammalFromJson() throws JsonProcessingException {
         // given
-        String json ="{'mammalType':'HUMAN','name':'givenName'}";
+        String json = "{'mammalType':'HUMAN','name':'givenName'}";
 
         // when
         Mammal actual = objectMapper.readValue(json, Mammal.class);
@@ -52,7 +53,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeHumanAsMammalFromSerializedHuman() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(new Human("givenName"));
+        String json = objectMapper.writeValueAsString(new Human("givenName"));
 
         // when
         Mammal actual = objectMapper.readValue(json, Mammal.class);
@@ -64,7 +65,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeListOfAnimals() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
+        String json = objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
 
         // when
         List<Animal> actual = objectMapper.readValue(json, new TypeReference<List<Animal>>() {
@@ -77,7 +78,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeListOfMammals() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
+        String json = objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
 
         // when
         List<Mammal> actual = objectMapper.readValue(json, new TypeReference<List<Mammal>>() {
@@ -90,7 +91,7 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeHumanAsHumanFromJson() throws JsonProcessingException {
         // given
-        String json ="{'animalType':'MAMMAL','mammalType':'HUMAN','name':'givenName'}";
+        String json = "{'animalType':'MAMMAL','mammalType':'HUMAN','name':'givenName'}";
 
         // when
         Human actual = objectMapper.readValue(json, Human.class);
@@ -101,18 +102,24 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
 
     @JsonTypeResolveWith(AnimalJsonTypeResolver.class)
     interface Animal {
+
         AnimalType getAnimalType();
+
     }
 
     static class AnimalJsonTypeResolver extends SimpleJsonTypeResolver<AnimalType> {
+
         public AnimalJsonTypeResolver() {
             super(AnimalType.class, "animalType");
         }
+
     }
 
     @JsonTypeResolveWith(MammalJsonTypeResolver.class)
     interface Mammal extends Animal {
+
         MammalType getMammalType();
+
     }
 
     static class MammalJsonTypeResolver extends SimpleJsonTypeResolver<MammalType> {
@@ -120,18 +127,26 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
         public MammalJsonTypeResolver() {
             super(MammalType.class, "mammalType");
         }
+
     }
 
-    @Value
-    static class Human implements Mammal {
-        private final String name;
-        private final AnimalType animalType = AnimalType.MAMMAL;
-        private final MammalType mammalType = MammalType.HUMAN;
-    }
+    record Human(String name) implements Mammal {
+
+            @Override
+            public AnimalType getAnimalType() {
+                return AnimalType.MAMMAL;
+            }
+
+            @Override
+            public MammalType getMammalType() {
+                return MammalType.HUMAN;
+            }
+
+        }
 
     @Getter
     @AllArgsConstructor
-    enum AnimalType implements TypeProvider {
+    enum AnimalType implements TypeProvider<Animal> {
         MAMMAL(Mammal.class);
 
         private final Class<? extends Animal> type;
@@ -139,9 +154,10 @@ class MultiHierarchyJsonTypedDeserializerTest extends TestBase {
 
     @Getter
     @AllArgsConstructor
-    enum MammalType implements TypeProvider {
+    enum MammalType implements TypeProvider<Mammal> {
         HUMAN(Human.class);
 
         private final Class<? extends Mammal> type;
     }
+
 }

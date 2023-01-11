@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
@@ -28,28 +27,32 @@ class SimpleJsonHierarchyWithDefaultTypeDeserializerTest extends TestBase {
     interface FooBar extends SimpleJsonHierarchy<FooBarType> {
     }
 
-    @Value
-    static class Foo implements FooBar {
-        private final String foo;
-        private final FooBarType type = FooBarType.FOO;
+    record Foo(String foo) implements FooBar {
+
+        public FooBarType getType() {
+                return FooBarType.FOO;
+            }
+
     }
 
-    @Value
-    static class Bar implements FooBar {
-        private final String bar;
-        private final FooBarType type = FooBarType.BAR;
+    record Bar(String bar) implements FooBar {
+
+        public FooBarType getType() {
+                return FooBarType.BAR;
+            }
+
     }
 
     @Getter
     @AllArgsConstructor
-    enum FooBarType implements TypeProvider {
+    enum FooBarType implements TypeProvider<FooBar> {
         FOO(Foo.class),
         BAR(Bar.class);
 
         private final Class<? extends FooBar> type;
 
         @Override
-        public Optional<Class> getDefaultType() {
+        public Optional<Class<? extends FooBar>> getDefaultType() {
             return Optional.of(Foo.class);
         }
     }

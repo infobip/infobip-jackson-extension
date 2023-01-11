@@ -12,7 +12,6 @@ import com.infobip.jackson.TestBase;
 import com.infobip.jackson.TypeProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -119,21 +118,21 @@ class DynamicHierarchyDeserializerWithTypeProviderTest extends TestBase {
 
     }
 
-    @Value
-    static class Foo implements FooBar {
+    record Foo(String foo) implements FooBar {
 
-        private final String foo;
-        private final FooBarType type = FooBarType.FOO;
+            public FooBarType getType() {
+                return FooBarType.FOO;
+            }
 
-    }
+        }
 
-    @Value
-    static class Bar implements FooBar {
+    record Bar(String bar) implements FooBar {
 
-        private final String bar;
-        private final FooBarType type = FooBarType.BAR;
+            public FooBarType getType() {
+                return FooBarType.BAR;
+            }
 
-    }
+        }
 
     @Getter
     @AllArgsConstructor

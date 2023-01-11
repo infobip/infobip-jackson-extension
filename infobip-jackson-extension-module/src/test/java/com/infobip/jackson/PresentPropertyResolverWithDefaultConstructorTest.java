@@ -1,11 +1,12 @@
 package com.infobip.jackson;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.CaseFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 public class PresentPropertyResolverWithDefaultConstructorTest extends TestBase {
 
@@ -23,7 +24,7 @@ public class PresentPropertyResolverWithDefaultConstructorTest extends TestBase 
 
     @Getter
     @AllArgsConstructor
-    enum BikeType implements TypeProvider {
+    enum BikeType implements TypeProvider<Bike> {
         ROAD_BIKE(RoadBike.class),
         MOUNTAIN_BIKE(MountainBike.class);
 
@@ -42,15 +43,11 @@ public class PresentPropertyResolverWithDefaultConstructorTest extends TestBase 
         }
     }
 
-    @Value
-    static class RoadBike implements Bike {
+    record RoadBike(String roadBike) implements Bike {
 
-        private final String roadBike;
     }
 
-    @Value
-    static class MountainBike implements Bike {
+    record MountainBike(String mountainBike) implements Bike {
 
-        private final String mountainBike;
     }
 }

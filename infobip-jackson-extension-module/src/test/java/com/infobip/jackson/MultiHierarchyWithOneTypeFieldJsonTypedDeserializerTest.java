@@ -1,14 +1,15 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class MultiHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestBase {
@@ -105,19 +106,18 @@ class MultiHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestBase {
     interface Mammal extends Animal {
     }
 
-    @Value
-    static class Human implements Mammal {
-        private final String name;
+    record Human(String name) implements Mammal {
 
         @Override
-        public AnimalType getType() {
-            return AnimalType.HUMAN;
-        }
+            public AnimalType getType() {
+                return AnimalType.HUMAN;
+            }
+
     }
 
     @Getter
     @AllArgsConstructor
-    enum AnimalType implements TypeProvider {
+    enum AnimalType implements TypeProvider<Animal> {
         HUMAN(Human.class);
 
         private final Class<? extends Animal> type;
