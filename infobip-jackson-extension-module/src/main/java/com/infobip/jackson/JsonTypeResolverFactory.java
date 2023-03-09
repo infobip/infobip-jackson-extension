@@ -5,19 +5,21 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+
+import com.google.common.collect.ImmutableSet;
 
 public class JsonTypeResolverFactory {
+
+    private final Set<Class<?>> ignoredClasses = ImmutableSet.of(SimpleJsonHierarchy.class,
+                                                                 PresentPropertyJsonHierarchy.class);
 
     public Optional<JsonTypeResolver> create(Class<?> type) {
         if (Objects.isNull(type)) {
             return Optional.empty();
         }
 
-        if(SimpleJsonHierarchy.class.equals(type)) {
+        if(ignoredClasses.contains(type)) {
             return Optional.empty();
         }
 
