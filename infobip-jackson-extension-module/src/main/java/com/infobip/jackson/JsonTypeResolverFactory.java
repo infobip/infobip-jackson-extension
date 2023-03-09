@@ -7,19 +7,17 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
-import com.google.common.collect.ImmutableSet;
-
 public class JsonTypeResolverFactory {
 
-    private final Set<Class<?>> ignoredClasses = ImmutableSet.of(SimpleJsonHierarchy.class,
-                                                                 PresentPropertyJsonHierarchy.class);
+    private final Set<Class<?>> ignoredClasses = Set.of(SimpleJsonHierarchy.class,
+                                                        PresentPropertyJsonHierarchy.class);
 
     public Optional<JsonTypeResolver> create(Class<?> type) {
         if (Objects.isNull(type)) {
             return Optional.empty();
         }
 
-        if(ignoredClasses.contains(type)) {
+        if (ignoredClasses.contains(type)) {
             return Optional.empty();
         }
 
@@ -59,16 +57,16 @@ public class JsonTypeResolverFactory {
     }
 
     private <E extends Enum<E> & TypeProvider> PresentPropertyJsonTypeResolver<E> createPresentPropertyJsonTypeResolver(
-            Class<?> type) {
+        Class<?> type) {
         Class<E> enumType = resolveFirstGenericTypeArgument(type, PresentPropertyJsonHierarchy.class);
         return new PresentPropertyJsonTypeResolver<>(enumType);
     }
 
     @SuppressWarnings("unchecked")
     private <E extends Enum<E> & TypeProvider> PresentPropertyJsonTypeResolver<E> createSubtypeOfPresentPropertyJsonTypeResolver(
-            Class<?> resolverType,
-            Class<?> targetType) throws
-            IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+        Class<?> resolverType,
+        Class<?> targetType) throws
+        IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 
         Class<E> enumType = resolveFirstGenericTypeArgument(targetType, PresentPropertyJsonHierarchy.class);
         for (Constructor<?> cctor : resolverType.getConstructors()) {
@@ -76,7 +74,7 @@ public class JsonTypeResolverFactory {
                 return (PresentPropertyJsonTypeResolver<E>) getConstructor(resolverType).newInstance();
             } else if (cctor.getParameterCount() == 1 && cctor.getParameterTypes()[0].equals(Class.class)) {
                 return (PresentPropertyJsonTypeResolver<E>) getConstructor(resolverType, Class.class).newInstance(
-                        enumType);
+                    enumType);
             }
         }
         throw new IllegalArgumentException("Failed to resolve default constructor for " + resolverType);
@@ -129,7 +127,7 @@ public class JsonTypeResolverFactory {
         }
 
         throw new IllegalArgumentException(
-                "Failed to resolve type argument " + type + " " + interfaceType + " with index" + 0);
+            "Failed to resolve type argument " + type + " " + interfaceType + " with index" + 0);
     }
 
     private List<Type> getAllInterfaces(Class<?> type) {
@@ -150,6 +148,7 @@ public class JsonTypeResolverFactory {
 
     private boolean isSubtypeOf(Class<?> type, Class<?> parentType) {
         return type.getSuperclass() != null
-                && (type.getSuperclass().equals(parentType) || isSubtypeOf(type.getSuperclass(), parentType));
+               && (type.getSuperclass().equals(parentType) || isSubtypeOf(type.getSuperclass(), parentType));
     }
+
 }

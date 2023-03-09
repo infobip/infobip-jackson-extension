@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class JsonTypeResolverFactoryTest {
 
-    private JsonTypeResolverFactory factory = new JsonTypeResolverFactory();
+    private final JsonTypeResolverFactory factory = new JsonTypeResolverFactory();
 
     @Test
     void shouldHandleSimpleJsonHierarchy() {
@@ -22,7 +22,7 @@ class JsonTypeResolverFactoryTest {
     void shouldHandlePresentPropertyJsonHierarchyHierarchy() {
 
         // when
-        Optional<JsonTypeResolver> actual = factory.create(PresentPropertyJsonHierarchy.class);
+        var actual = factory.create(PresentPropertyJsonHierarchy.class);
 
         // then
         then(actual).isEmpty();
