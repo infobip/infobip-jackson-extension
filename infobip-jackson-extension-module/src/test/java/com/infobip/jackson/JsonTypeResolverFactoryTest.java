@@ -2,6 +2,8 @@ package com.infobip.jackson;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 class JsonTypeResolverFactoryTest {
@@ -12,7 +14,7 @@ class JsonTypeResolverFactoryTest {
     void shouldHandleSimpleJsonHierarchy() {
 
         // when
-        var actual = factory.create(SimpleJsonHierarchy.class);
+        Optional<JsonTypeResolver> actual = factory.create(SimpleJsonHierarchy.class);
 
         // then
         then(actual).isEmpty();
