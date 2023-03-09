@@ -1,13 +1,23 @@
 package com.infobip.jackson;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class JsonTypeResolverFactory {
 
     public Optional<JsonTypeResolver> create(Class<?> type) {
         if (Objects.isNull(type)) {
+            return Optional.empty();
+        }
+
+        if(SimpleJsonHierarchy.class.equals(type)) {
             return Optional.empty();
         }
 
