@@ -18,4 +18,14 @@ class JsonTypeResolverFactoryTest {
         then(actual).isEmpty();
     }
 
+    @Test
+    void shouldHandlePresentPropertyJsonHierarchyHierarchy() {
+
+        // when
+        Optional<JsonTypeResolver> actual = factory.create(PresentPropertyJsonHierarchy.class);
+
+        // then
+        then(actual).isEmpty();
+    }
+
 }
