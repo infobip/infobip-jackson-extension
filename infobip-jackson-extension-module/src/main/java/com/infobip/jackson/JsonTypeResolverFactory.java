@@ -131,7 +131,7 @@ public class JsonTypeResolverFactory {
     }
 
     private List<Type> getAllInterfaces(Class<?> type) {
-        List<Type> allInterfaces = new ArrayList<Type>();
+        List<Type> allInterfaces = new ArrayList<>();
 
         for (Type anInterface : type.getGenericInterfaces()) {
             allInterfaces.add(anInterface);
@@ -141,6 +141,8 @@ public class JsonTypeResolverFactory {
         }
 
         Optional.ofNullable(type.getGenericSuperclass())
+                .map(superClass -> superClass instanceof ParameterizedType ?
+                        ((ParameterizedType) superClass).getRawType() : superClass)
                 .ifPresent(superClass -> allInterfaces.addAll(getAllInterfaces((Class<?>) superClass)));
 
         return allInterfaces;
