@@ -45,7 +45,7 @@ public class JsonTypeResolverFactory {
         }
     }
 
-    private <E extends Enum<E> & TypeProvider> SimpleJsonTypeResolver<E> createSimpleTypeJsonResolver(Class<?> type) {
+    private <E extends Enum<E> & TypeProvider<?>> SimpleJsonTypeResolver<E> createSimpleTypeJsonResolver(Class<?> type) {
         Class<E> enumType = resolveFirstGenericTypeArgument(type, SimpleJsonHierarchy.class);
         String propertyName = Optional.ofNullable(extractAnnotation(type, JsonTypePropertyName.class))
                                       .map(JsonTypePropertyName::value)
@@ -56,14 +56,14 @@ public class JsonTypeResolverFactory {
         return new SimpleJsonTypeResolver<>(enumType, propertyName, upperCase);
     }
 
-    private <E extends Enum<E> & TypeProvider> PresentPropertyJsonTypeResolver<E> createPresentPropertyJsonTypeResolver(
+    private <E extends Enum<E> & TypeProvider<?>> PresentPropertyJsonTypeResolver<E> createPresentPropertyJsonTypeResolver(
         Class<?> type) {
         Class<E> enumType = resolveFirstGenericTypeArgument(type, PresentPropertyJsonHierarchy.class);
         return new PresentPropertyJsonTypeResolver<>(enumType);
     }
 
     @SuppressWarnings("unchecked")
-    private <E extends Enum<E> & TypeProvider> PresentPropertyJsonTypeResolver<E> createSubtypeOfPresentPropertyJsonTypeResolver(
+    private <E extends Enum<E> & TypeProvider<?>> PresentPropertyJsonTypeResolver<E> createSubtypeOfPresentPropertyJsonTypeResolver(
         Class<?> resolverType,
         Class<?> targetType) throws
         IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
@@ -116,8 +116,7 @@ public class JsonTypeResolverFactory {
     private <T> T resolveFirstGenericTypeArgument(Class<?> type, Class<?> interfaceType) {
         List<Type> genericInterfaces = getAllInterfaces(type);
         for (Type genericInterface : genericInterfaces) {
-            if (genericInterface instanceof ParameterizedType) {
-                ParameterizedType parameterizedInterface = (ParameterizedType) genericInterface;
+            if (genericInterface instanceof final ParameterizedType parameterizedInterface) {
                 if (interfaceType.equals(parameterizedInterface.getRawType())) {
                     @SuppressWarnings("unchecked")
                     T typeArgument = (T) parameterizedInterface.getActualTypeArguments()[0];
