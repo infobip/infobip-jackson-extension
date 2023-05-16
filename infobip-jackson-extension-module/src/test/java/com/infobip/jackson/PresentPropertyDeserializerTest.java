@@ -1,14 +1,16 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Value;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class PresentPropertyDeserializerTest extends TestBase {
@@ -116,7 +118,7 @@ class PresentPropertyDeserializerTest extends TestBase {
 
     @Getter
     @AllArgsConstructor
-    enum BikeType implements TypeProvider {
+    enum BikeType implements TypeProvider<Bike> {
         ROAD_BIKE(RoadBike.class),
         BMX(Bmx.class);
 

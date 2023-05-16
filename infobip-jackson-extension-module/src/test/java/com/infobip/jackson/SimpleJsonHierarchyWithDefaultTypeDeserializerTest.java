@@ -43,14 +43,14 @@ class SimpleJsonHierarchyWithDefaultTypeDeserializerTest extends TestBase {
 
     @Getter
     @AllArgsConstructor
-    enum FooBarType implements TypeProvider {
+    enum FooBarType implements TypeProvider<FooBar> {
         FOO(Foo.class),
         BAR(Bar.class);
 
         private final Class<? extends FooBar> type;
 
         @Override
-        public Optional<Class> getDefaultType() {
+        public Optional<Class<? extends FooBar>> getDefaultType() {
             return Optional.of(Foo.class);
         }
     }

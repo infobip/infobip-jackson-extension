@@ -2,7 +2,7 @@ package com.infobip.jackson;
 
 import static com.infobip.jackson.JsonTypePropertyName.DEFAULT_TYPE_PROPERTY_NAME;
 
-public class SimpleJsonTypeResolver<E extends Enum<E> & TypeProvider> extends CompositeJsonTypeResolver<E> {
+public class SimpleJsonTypeResolver<E extends Enum<E> & TypeProvider<?>> extends CompositeJsonTypeResolver<E> {
 
     public SimpleJsonTypeResolver(Class<E> type) {
         this(type, DEFAULT_TYPE_PROPERTY_NAME);

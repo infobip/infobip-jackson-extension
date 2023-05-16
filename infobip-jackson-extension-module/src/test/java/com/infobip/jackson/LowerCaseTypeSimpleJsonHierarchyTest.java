@@ -1,16 +1,18 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Value;
+import org.junit.jupiter.api.Test;
 
 @AllArgsConstructor
 class LowerCaseTypeSimpleJsonHierarchyTest extends TestBase {
@@ -121,7 +123,7 @@ class LowerCaseTypeSimpleJsonHierarchyTest extends TestBase {
 
     @Getter
     @AllArgsConstructor
-    enum FooBarType implements TypeProvider {
+    enum FooBarType implements TypeProvider<FooBar> {
         FOO(Foo.class),
         BAR(Bar.class);
 

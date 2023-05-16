@@ -1,11 +1,11 @@
 package com.infobip.jackson;
 
-import com.google.common.base.CaseFormat;
-
 import java.util.Map;
 import java.util.Objects;
 
-public class PresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider> implements JsonTypeResolver {
+import com.google.common.base.CaseFormat;
+
+public class PresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider<?>> implements JsonTypeResolver {
 
     private final Class<E> type;
     private final CaseFormat caseFormat;
@@ -28,5 +28,9 @@ public class PresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider> i
         }
 
         throw new IllegalArgumentException("Failed to resolve type " + json);
+    }
+
+    public Class<E> getType() {
+        return type;
     }
 }

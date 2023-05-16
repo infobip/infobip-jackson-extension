@@ -1,17 +1,19 @@
 package com.infobip.jackson;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.base.CaseFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Value;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
 class PresentPropertyCaseFormatDeserializerTest extends TestBase {
@@ -108,7 +110,7 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
 
     }
 
-    static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider>
+    static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & TypeProvider<?>>
             extends PresentPropertyJsonTypeResolver<E> {
 
         public LowerUnderscorePresentPropertyJsonTypeResolver(Class<E> type) {
@@ -130,7 +132,7 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
 
     @Getter
     @AllArgsConstructor
-    enum BikeType implements TypeProvider {
+    enum BikeType implements TypeProvider<Bike> {
         ROAD_BIKE(RoadBike.class),
         MOUNTAIN_BIKE(MountainBike.class);
 
