@@ -252,8 +252,9 @@ static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & 
     }
 }
 ```
-Then your model may look as follows (note that there's a [bug](https://github.com/FasterXML/jackson-databind/issues/2992) with @JsonNaming and records in jackson):
+Then your model may look as follows:
 ```java
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
 interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
@@ -267,11 +268,11 @@ static class LowerUnderscorePresentPropertyJsonTypeResolver<E extends Enum<E> & 
    }
 }
 
-record RoadBike(@JsonProperty("road_bike") String roadBike) implements Bike {
+record RoadBike(String roadBike) implements Bike {
 
 }
 
-record MountainBike(@JsonProperty("mountain_bike") String mountainBike) implements Bike {
+record MountainBike(String mountainBike) implements Bike {
 
 }
 ``` 

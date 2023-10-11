@@ -1,17 +1,18 @@
 package com.infobip.jackson;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Arrays;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.base.CaseFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
 class PresentPropertyCaseFormatDeserializerTest extends TestBase {
@@ -102,6 +103,7 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
         then(actual).isEqualTo(new RoadBike("road bike"));
     }
 
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonTypeResolveWith(LowerUnderscorePresentPropertyJsonTypeResolver.class)
     interface Bike extends PresentPropertyJsonHierarchy<BikeType> {
 
@@ -115,11 +117,11 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
         }
     }
 
-    record RoadBike(@JsonProperty("road_bike") String roadBike) implements Bike {
+    record RoadBike(String roadBike) implements Bike {
 
     }
 
-    record MountainBike(@JsonProperty("mountain_bike") String mountainBike) implements Bike {
+    record MountainBike(String mountainBike) implements Bike {
 
     }
 
