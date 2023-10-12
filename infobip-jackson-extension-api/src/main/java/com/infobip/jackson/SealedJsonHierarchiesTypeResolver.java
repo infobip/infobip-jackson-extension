@@ -94,4 +94,8 @@ public class SealedJsonHierarchiesTypeResolver implements JsonTypeResolver {
     public String getTypePropertyName() {
         return typePropertyName;
     }
+
+    public Map<String, ? extends SimpleJsonTypeResolver<?>> getTypeValueToResolver() {
+        return typeValueToResolver;
+    }
 }
