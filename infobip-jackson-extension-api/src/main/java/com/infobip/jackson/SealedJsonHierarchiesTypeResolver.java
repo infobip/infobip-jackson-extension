@@ -90,4 +90,8 @@ public class SealedJsonHierarchiesTypeResolver implements JsonTypeResolver {
         SimpleJsonTypeResolver<?> simpleJsonTypeResolver = typeValueToResolver.get(value);
         return simpleJsonTypeResolver.resolve(json);
     }
+
+    public String getTypePropertyName() {
+        return typePropertyName;
+    }
 }
