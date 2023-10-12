@@ -1,14 +1,12 @@
 package com.infobip.jackson;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 
 public class JsonTypeResolverFactory {
 
+    private final Set<Class<?>> preferredInterfaces = Set.of(SimpleJsonHierarchy.class, PresentPropertyJsonHierarchy.class);
     private final Set<Class<?>> ignoredClasses = Set.of(SimpleJsonHierarchy.class,
                                                         PresentPropertyJsonHierarchy.class);
 
@@ -35,12 +33,23 @@ public class JsonTypeResolverFactory {
             return createPresentPropertyJsonTypeResolver(targetType);
         }
 
-        try {
-            if (isSubtypeOf(type, PresentPropertyJsonTypeResolver.class)) {
+        if (isSubtypeOf(type, PresentPropertyJsonTypeResolver.class)) {
+            try {
                 return createSubtypeOfPresentPropertyJsonTypeResolver(type, targetType);
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException |
+                     NoSuchMethodException e) {
+                throw new IllegalArgumentException("Failed to create PresentPropertyJsonTypeResolver for  " + type, e);
             }
+        }
+
+        if (type.equals(SealedJsonHierarchiesTypeResolver.class)) {
+            return SealedJsonHierarchiesTypeResolver.of(targetType, this::create);
+        }
+
+        try {
             return (JsonTypeResolver) getConstructor(type).newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             throw new IllegalArgumentException("Failed to resolve default constructor for " + type, e);
         }
     }
@@ -57,16 +66,16 @@ public class JsonTypeResolverFactory {
     }
 
     private <E extends Enum<E> & TypeProvider<?>> PresentPropertyJsonTypeResolver<E> createPresentPropertyJsonTypeResolver(
-        Class<?> type) {
+            Class<?> type) {
         Class<E> enumType = resolveFirstGenericTypeArgument(type, PresentPropertyJsonHierarchy.class);
         return new PresentPropertyJsonTypeResolver<>(enumType);
     }
 
     @SuppressWarnings("unchecked")
     private <E extends Enum<E> & TypeProvider<?>> PresentPropertyJsonTypeResolver<E> createSubtypeOfPresentPropertyJsonTypeResolver(
-        Class<?> resolverType,
-        Class<?> targetType) throws
-        IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+            Class<?> resolverType,
+            Class<?> targetType) throws
+            IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 
         Class<E> enumType = resolveFirstGenericTypeArgument(targetType, PresentPropertyJsonHierarchy.class);
         for (Constructor<?> cctor : resolverType.getConstructors()) {
@@ -74,7 +83,7 @@ public class JsonTypeResolverFactory {
                 return (PresentPropertyJsonTypeResolver<E>) getConstructor(resolverType).newInstance();
             } else if (cctor.getParameterCount() == 1 && cctor.getParameterTypes()[0].equals(Class.class)) {
                 return (PresentPropertyJsonTypeResolver<E>) getConstructor(resolverType, Class.class).newInstance(
-                    enumType);
+                        enumType);
             }
         }
         throw new IllegalArgumentException("Failed to resolve default constructor for " + resolverType);
@@ -101,7 +110,15 @@ public class JsonTypeResolverFactory {
             return currentJsonTypeResolveWith;
         }
 
-        Class<?>[] interfaces = type.getInterfaces();
+        var interfaces = type.getInterfaces();
+
+        for (Class<?> preferredInterface : preferredInterfaces) {
+            for (Class<?> anInterface : interfaces) {
+                if(preferredInterface.equals(anInterface)) {
+                    return anInterface.getAnnotation(annotationType);
+                }
+            }
+        }
 
         for (Class<?> anInterface : interfaces) {
             A annotationJsonTypeResolveWith = extractAnnotation(anInterface, annotationType);
@@ -126,7 +143,7 @@ public class JsonTypeResolverFactory {
         }
 
         throw new IllegalArgumentException(
-            "Failed to resolve type argument " + type + " " + interfaceType + " with index" + 0);
+                "Failed to resolve type argument " + type + " " + interfaceType + " with index" + 0);
     }
 
     private List<Type> getAllInterfaces(Class<?> type) {
@@ -149,7 +166,6 @@ public class JsonTypeResolverFactory {
 
     private boolean isSubtypeOf(Class<?> type, Class<?> parentType) {
         return type.getSuperclass() != null
-               && (type.getSuperclass().equals(parentType) || isSubtypeOf(type.getSuperclass(), parentType));
+                && (type.getSuperclass().equals(parentType) || isSubtypeOf(type.getSuperclass(), parentType));
     }
-
 }

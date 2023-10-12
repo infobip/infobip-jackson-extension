@@ -1,15 +1,14 @@
 package com.infobip.jackson;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
 class MultiHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestBase {
@@ -65,27 +64,27 @@ class MultiHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeListOfAnimals() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
+        String json =objectMapper.writeValueAsString(List.of(new Human("givenName")));
 
         // when
         List<Animal> actual = objectMapper.readValue(json, new TypeReference<List<Animal>>() {
         });
 
         // then
-        then(actual).isEqualTo(Arrays.asList(new Human("givenName")));
+        then(actual).isEqualTo(List.of(new Human("givenName")));
     }
 
     @Test
     void shouldDeserializeListOfMammals() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Human("givenName")));
+        String json =objectMapper.writeValueAsString(List.of(new Human("givenName")));
 
         // when
         List<Mammal> actual = objectMapper.readValue(json, new TypeReference<List<Mammal>>() {
         });
 
         // then
-        then(actual).isEqualTo(Arrays.asList(new Human("givenName")));
+        then(actual).isEqualTo(List.of(new Human("givenName")));
     }
 
     @Test

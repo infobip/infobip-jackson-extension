@@ -1,15 +1,14 @@
 package com.infobip.jackson;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
-import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
 class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
@@ -65,27 +64,27 @@ class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
     @Test
     void shouldDeserializeListOfMessages() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new InboundSmsMessage()));
+        String json =objectMapper.writeValueAsString(List.of(new InboundSmsMessage()));
 
         // when
         var actual = objectMapper.readValue(json, new TypeReference<List<Message>>() {
         });
 
         // then
-        then(actual).isEqualTo(Arrays.asList(new InboundSmsMessage()));
+        then(actual).isEqualTo(List.of(new InboundSmsMessage()));
     }
 
     @Test
     void shouldDeserializeListOfInboundMessages() throws JsonProcessingException {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new InboundSmsMessage()));
+        String json =objectMapper.writeValueAsString(List.of(new InboundSmsMessage()));
 
         // when
         var actual = objectMapper.readValue(json, new TypeReference<List<InboundMessage>>() {
         });
 
         // then
-        then(actual).isEqualTo(Arrays.asList(new InboundSmsMessage()));
+        then(actual).isEqualTo(List.of(new InboundSmsMessage()));
     }
 
     @Test

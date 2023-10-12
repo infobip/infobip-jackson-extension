@@ -11,7 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
-class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestBase {
+class MultiClassHierarchyWithOneTypeFieldAndMultipleEnumsJsonTypedDeserializerTest extends TestBase {
 
     @Test
     void shouldDeserializeHumanAsAnimalFromJson() throws JsonProcessingException {
@@ -62,16 +62,64 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
     }
 
     @Test
-    void shouldDeserializeListOfAnimals() throws JsonProcessingException {
+    void shouldDeserializeParrotAsAnimalFromJson() throws JsonProcessingException {
         // given
-        String json = objectMapper.writeValueAsString(List.of(new Human("givenName")));
+        String json = "{'type':'PARROT','name':'givenName'}";
 
         // when
-        List<Animal> actual = objectMapper.readValue(json, new TypeReference<List<Animal>>() {
+        Animal actual = objectMapper.readValue(json, Animal.class);
+
+        // then
+        then(actual).isEqualTo(new Parrot());
+    }
+
+    @Test
+    void shouldDeserializeParrotAsAnimalFromSerializedParrot() throws JsonProcessingException {
+        // given
+        String json = objectMapper.writeValueAsString(new Parrot());
+
+        // when
+        Animal actual = objectMapper.readValue(json, Animal.class);
+
+        // then
+        then(actual).isEqualTo(new Parrot());
+    }
+
+    @Test
+    void shouldDeserializeParrotAsBirdFromJson() throws JsonProcessingException {
+        // given
+        String json = "{'type':'PARROT'}";
+
+        // when
+        Bird actual = objectMapper.readValue(json, Bird.class);
+
+        // then
+        then(actual).isEqualTo(new Parrot());
+    }
+
+    @Test
+    void shouldDeserializeParrotAsBirdFromSerializedParrot() throws JsonProcessingException {
+        // given
+        String json = objectMapper.writeValueAsString(new Parrot());
+
+        // when
+        Bird actual = objectMapper.readValue(json, Bird.class);
+
+        // then
+        then(actual).isEqualTo(new Parrot());
+    }
+
+    @Test
+    void shouldDeserializeListOfAnimals() throws JsonProcessingException {
+        // given
+        String json = objectMapper.writeValueAsString(List.of(new Human("givenName"), new Parrot()));
+
+        // when
+        List<Animal> actual = objectMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
-        then(actual).isEqualTo(List.of(new Human("givenName")));
+        then(actual).isEqualTo(List.of(new Human("givenName"), new Parrot()));
     }
 
     @Test
@@ -80,7 +128,7 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
         String json = objectMapper.writeValueAsString(List.of(new Human("givenName")));
 
         // when
-        List<Mammal> actual = objectMapper.readValue(json, new TypeReference<List<Mammal>>() {
+        List<Mammal> actual = objectMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
@@ -99,29 +147,47 @@ class MultiClassHierarchyWithOneTypeFieldJsonTypedDeserializerTest extends TestB
         then(actual).isEqualTo(new Human("givenName"));
     }
 
-    interface Animal extends SimpleJsonHierarchy<AnimalType> {
+    sealed interface Animal extends SealedSimpleJsonHierarchies {
 
     }
 
-    interface Mammal extends Animal {
-
-    }
-
-    record Human(String name) implements Mammal {
-
-        @Override
-        public AnimalType getType() {
-            return AnimalType.HUMAN;
-        }
+    sealed interface Bird extends Animal, SimpleJsonHierarchy<BirdType> {
 
     }
 
     @Getter
     @AllArgsConstructor
-    enum AnimalType implements TypeProvider<Animal> {
-        HUMAN(Human.class);
+    enum BirdType implements TypeProvider<Bird> {
+        PARROT(Parrot.class);
 
-        private final Class<? extends Animal> type;
+        private final Class<? extends Bird> type;
     }
 
+    record Parrot() implements Bird {
+
+        @Override
+        public BirdType getType() {
+            return BirdType.PARROT;
+        }
+    }
+
+    sealed interface Mammal extends Animal, SimpleJsonHierarchy<MammalType> {
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    enum MammalType implements TypeProvider<Mammal> {
+        HUMAN(Human.class);
+
+        private final Class<? extends Mammal> type;
+    }
+
+    record Human(String name) implements Mammal {
+
+        @Override
+        public MammalType getType() {
+            return MammalType.HUMAN;
+        }
+    }
 }
