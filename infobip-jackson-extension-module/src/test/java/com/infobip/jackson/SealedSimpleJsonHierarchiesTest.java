@@ -11,7 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.BDDAssertions.then;
 
 @AllArgsConstructor
-class MultiClassHierarchyWithOneTypeFieldAndMultipleEnumsJsonTypedDeserializerTest extends TestBase {
+class SealedSimpleJsonHierarchiesTest extends TestBase {
 
     @Test
     void shouldDeserializeHumanAsAnimalFromJson() throws JsonProcessingException {
