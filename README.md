@@ -16,6 +16,8 @@ Library which provides new features for (de)serialization on top of [Jackson lib
     * [Overriding type json property name](#OverridingTypeJsonPropertyName)
     * [Lower case type value](#LowerCaseTypeValue)
     * [Multi level hierarchies](#MultiLevelHierarchies)
+      * [Hierarchy per property approach](#HierarchyPerPropertyApproach)
+      * [Single property approach](#SinglePropertyApproach)
     * [Parallel hierarchies](#ParallelHierarchies)
     * [Typeless (present property)](#Typeless)
     * [Dynamic hierarchy](#DynamicHierarchy)
@@ -149,7 +151,13 @@ Casing of the property type value can be overridden:
 <a id="MultiLevelHierarchies"></a>
 ### Multi level hierarchies
 
-If you have multiple levels of hierarchy following approach can be used:
+Multi level hierarchies are supported with 2 different approach.
+First approach is used when there is a property per hierarchy.
+Second approach is when only one property is used but property values are globally unique 
+meaning there can't be two hierarchies that have same property value.
+
+<a id="HierarchyPerPropertyApproach"></a>
+When there is a property per hierarchy following can be used:
 
 ```java
 @JsonTypeResolveWith(AnimalJsonTypeResolver.class)
@@ -203,6 +211,55 @@ enum MammalType implements TypeProvider<Mammal> {
    HUMAN(Human.class);
 
    private final Class<? extends Mammal> type;
+}
+```
+
+<a id="SinglePropertyApproach"></a>
+When there is a single property shared for all hierarchies following can be used:
+
+```java
+sealed interface Animal extends SealedSimpleJsonHierarchies {
+
+}
+
+sealed interface Bird extends Animal, SimpleJsonHierarchy<BirdType> {
+
+}
+
+@Getter
+@AllArgsConstructor
+enum BirdType implements TypeProvider<Bird> {
+   PARROT(Parrot.class);
+
+   private final Class<? extends Bird> type;
+}
+
+record Parrot() implements Bird {
+
+   @Override
+   public BirdType getType() {
+      return BirdType.PARROT;
+   }
+}
+
+sealed interface Mammal extends Animal, SimpleJsonHierarchy<MammalType> {
+
+}
+
+@Getter
+@AllArgsConstructor
+enum MammalType implements TypeProvider<Mammal> {
+   HUMAN(Human.class);
+
+   private final Class<? extends Mammal> type;
+}
+
+record Human(String name) implements Mammal {
+
+   @Override
+   public MammalType getType() {
+      return MammalType.HUMAN;
+   }
 }
 ```
 
