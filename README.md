@@ -156,6 +156,10 @@ First approach is used when there is a property per hierarchy.
 Second approach is when only one property is used but property values are globally unique 
 meaning there can't be two hierarchies that have same property value.
 
+Note that these have simple specific hierarchy for clarity and brevity of the documentation, but you can use mechanisms 
+that already exists for a specific hierarchy - e.g. one hierarchy can use the default type property
+but another one can [override type json property name](#OverridingTypeJsonPropertyName).
+
 <a id="HierarchyPerPropertyApproach"></a>
 When there is a property per hierarchy following can be used:
 
