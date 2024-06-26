@@ -153,7 +153,7 @@ Casing of the property type value can be overridden:
 
 Multi level hierarchies are supported with 2 different approach.
 First approach is used when there is a property per hierarchy.
-Second approach is when only one property is used but property values are globally unique 
+Second approach is used when only one property is shared but property values are globally unique 
 meaning there can't be two hierarchies that have same property value.
 
 Note that these examples have simplified sub hierarchies for brevity of the documentation, but you can use different 
