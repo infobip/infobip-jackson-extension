@@ -157,7 +157,7 @@ The first approach is used when there is a property per hierarchy.
 
 The second approach is used when only one property is shared, but property values are globally unique, meaning 
 there can't be two hierarchies that have the same property value. 
-If values were not unique, it would be unclear which class to deserialize.
+If values were not unique, it would be unclear to which class to deserialize.
 
 Note that these examples have simplified sub hierarchies for brevity of the documentation, but you can use different 
 mechanisms previously defined for specific sub hierarchy - e.g. one hierarchy can use the default type property
