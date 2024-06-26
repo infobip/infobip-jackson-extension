@@ -214,6 +214,8 @@ enum MammalType implements TypeProvider<Mammal> {
 }
 ```
 
+[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/MultiHierarchyJsonTypedDeserializerTest.java)
+
 <a id="SinglePropertyApproach"></a>
 When there is a single property shared for all hierarchies following can be used:
 
@@ -263,7 +265,7 @@ record Human(String name) implements Mammal {
 }
 ```
 
-[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/MultiHierarchyJsonTypedDeserializerTest.java)
+[Showcase](infobip-jackson-extension-module/src/test/java/com/infobip/jackson/SealedSimpleJsonHierarchiesTest.java)
 
 <a id="ParallelHierarchies"></a>
 ### Parallel hierarchies
