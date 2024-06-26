@@ -153,10 +153,11 @@ Casing of the property type value can be overridden:
 
 Multi level hierarchies are supported with 2 different approach.
 
-First approach is used when there is a property per hierarchy.
+The first approach is used when there is a property per hierarchy.
 
-Second approach is used when only one property is shared but property values are globally unique 
-meaning there can't be two hierarchies that have same property value. If values were not unique it would be ambiguous to which class to deserialize.
+The second approach is used when only one property is shared, but property values are globally unique, meaning 
+there can't be two hierarchies that have the same property value. 
+If values were not unique, it would be unclear which class to deserialize.
 
 Note that these examples have simplified sub hierarchies for brevity of the documentation, but you can use different 
 mechanisms previously defined for specific sub hierarchy - e.g. one hierarchy can use the default type property
