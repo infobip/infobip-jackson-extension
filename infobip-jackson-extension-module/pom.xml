@@ -9,6 +9,7 @@
 	</parent>
 
 	<artifactId>infobip-jackson-extension-module</artifactId>
+	<name>infobip-jackson-extension-module</name>
 
 	<dependencies>
 		<!-- INFOBIP -->
