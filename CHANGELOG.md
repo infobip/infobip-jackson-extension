@@ -1,3 +1,6 @@
+### 4.0.0
+* upgraded to Spring Boot 4
+* 
 ### 3.0.0
 * upgraded to Spring Boot 3
 

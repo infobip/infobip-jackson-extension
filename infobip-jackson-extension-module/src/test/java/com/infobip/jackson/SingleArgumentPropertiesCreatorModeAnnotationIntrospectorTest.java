@@ -92,7 +92,7 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
         // then
         then(actual).isInstanceOf(MismatchedInputException.class)
                     .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMultipleConstructors` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
-                                        " at [Source: (String)\"{'foo':'givenFoo'}\"; line: 1, column: 2]");
+                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]");
     }
 
     @Test
@@ -107,7 +107,7 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
         // then
         then(actual).isInstanceOf(MismatchedInputException.class)
                     .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMismatchingParameterType` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
-                                        " at [Source: (String)\"{'foo':1}\"; line: 1, column: 2]");
+                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]");
     }
 
     @Test
@@ -121,9 +121,8 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
 
         // then
         then(actual).isInstanceOf(MismatchedInputException.class)
-                    .hasMessage(
-                            "Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMismatchingParameterName` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
-                                    " at [Source: (String)\"{'foo':'givenFooBar'}\"; line: 1, column: 2]");
+                    .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMismatchingParameterName` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
+                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]");
     }
 
     @Value
