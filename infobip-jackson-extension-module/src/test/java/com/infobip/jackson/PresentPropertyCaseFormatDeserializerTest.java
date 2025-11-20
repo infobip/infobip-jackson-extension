@@ -1,13 +1,12 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.base.CaseFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,61 +17,61 @@ import static org.assertj.core.api.BDDAssertions.then;
 class PresentPropertyCaseFormatDeserializerTest extends TestBase {
 
     @Test
-    void shouldDeserializeRoadBikeAsBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsBikeFromJson() {
         // given
         String json = "{'road_bike':'road bike'}";
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("road bike"));
     }
 
     @Test
-    void shouldDeserializeRoadBikeAsBikeFromSerializedRoadBike() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsBikeFromSerializedRoadBike() {
         // given
-        String json = objectMapper.writeValueAsString(new RoadBike("road bike"));
+        String json = jsonMapper.writeValueAsString(new RoadBike("road bike"));
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("road bike"));
     }
 
     @Test
-    void shouldDeserializeMountainBikeAsBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeMountainBikeAsBikeFromJson() {
         // given
         String json = "{'mountain_bike':'mountain bike'}";
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new MountainBike("mountain bike"));
     }
 
     @Test
-    void shouldDeserializeMountainBikeAsBikeFromSerializedMountainBike() throws JsonProcessingException {
+    void shouldDeserializeMountainBikeAsBikeFromSerializedMountainBike() {
         // given
-        String json = objectMapper.writeValueAsString(new MountainBike("mountain bike"));
+        String json = jsonMapper.writeValueAsString(new MountainBike("mountain bike"));
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new MountainBike("mountain bike"));
     }
 
     @Test
-    void shouldDeserializeListOfBikes() throws JsonProcessingException {
+    void shouldDeserializeListOfBikes() {
         // given
-        String json = objectMapper.writeValueAsString(
+        String json = jsonMapper.writeValueAsString(
                 Arrays.asList(new RoadBike("road bike"), new MountainBike("mountain bike")));
 
         // when
-        List<Bike> actual = objectMapper.readValue(json, new TypeReference<List<Bike>>() {
+        List<Bike> actual = jsonMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
@@ -80,24 +79,24 @@ class PresentPropertyCaseFormatDeserializerTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeBikeWithMultipleMatchingProperties() throws JsonProcessingException {
+    void shouldDeserializeBikeWithMultipleMatchingProperties() {
         // given
         String json = "{'mountain_bike':'', 'road_bike': 'road bike'}";
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("road bike"));
     }
 
     @Test
-    void shouldDeserializeRoadBikeAsRoadBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsRoadBikeFromJson() {
         // given
         String json = "{'road_bike':'road bike'}";
 
         // when
-        RoadBike actual = objectMapper.readValue(json, RoadBike.class);
+        RoadBike actual = jsonMapper.readValue(json, RoadBike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("road bike"));

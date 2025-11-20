@@ -1,10 +1,10 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.util.List;
 
@@ -14,60 +14,60 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
 
     @Test
-    void shouldDeserializeInboundSmsMessageAsMessageFromJson() throws JsonProcessingException {
+    void shouldDeserializeInboundSmsMessageAsMessageFromJson() {
         // given
         String json ="{'direction':'INBOUND','channel':'SMS'}";
 
         // when
-        var actual = objectMapper.readValue(json, Message.class);
+        var actual = jsonMapper.readValue(json, Message.class);
 
         // then
         then(actual).isEqualTo(new InboundSmsMessage());
     }
 
     @Test
-    void shouldDeserializeInboundSmsMessageAsMessageFromSerializedInboundSmsMessage() throws JsonProcessingException {
+    void shouldDeserializeInboundSmsMessageAsMessageFromSerializedInboundSmsMessage() {
         // given
-        String json =objectMapper.writeValueAsString(new InboundSmsMessage());
+        String json = jsonMapper.writeValueAsString(new InboundSmsMessage());
 
         // when
-        var actual = objectMapper.readValue(json, Message.class);
+        var actual = jsonMapper.readValue(json, Message.class);
 
         // then
         then(actual).isEqualTo(new InboundSmsMessage());
     }
 
     @Test
-    void shouldDeserializeInboundSmsMessageAsInboundMessageFromJson() throws JsonProcessingException {
+    void shouldDeserializeInboundSmsMessageAsInboundMessageFromJson() {
         // given
         String json ="{'direction':'INBOUND','channel':'SMS'}";
 
         // when
-        var actual = objectMapper.readValue(json, InboundMessage.class);
+        var actual = jsonMapper.readValue(json, InboundMessage.class);
 
         // then
         then(actual).isEqualTo(new InboundSmsMessage());
     }
 
     @Test
-    void shouldDeserializeInboundSmsMessageAsInboundMessageFromInboundSmsMessage() throws JsonProcessingException {
+    void shouldDeserializeInboundSmsMessageAsInboundMessageFromInboundSmsMessage() {
         // given
-        String json =objectMapper.writeValueAsString(new InboundSmsMessage());
+        String json = jsonMapper.writeValueAsString(new InboundSmsMessage());
 
         // when
-        var actual = objectMapper.readValue(json, InboundMessage.class);
+        var actual = jsonMapper.readValue(json, InboundMessage.class);
 
         // then
         then(actual).isEqualTo(new InboundSmsMessage());
     }
 
     @Test
-    void shouldDeserializeListOfMessages() throws JsonProcessingException {
+    void shouldDeserializeListOfMessages() {
         // given
-        String json =objectMapper.writeValueAsString(List.of(new InboundSmsMessage()));
+        String json = jsonMapper.writeValueAsString(List.of(new InboundSmsMessage()));
 
         // when
-        var actual = objectMapper.readValue(json, new TypeReference<List<Message>>() {
+        var actual = jsonMapper.readValue(json, new TypeReference<List<Message>>() {
         });
 
         // then
@@ -75,12 +75,12 @@ class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeListOfInboundMessages() throws JsonProcessingException {
+    void shouldDeserializeListOfInboundMessages() {
         // given
-        String json =objectMapper.writeValueAsString(List.of(new InboundSmsMessage()));
+        String json = jsonMapper.writeValueAsString(List.of(new InboundSmsMessage()));
 
         // when
-        var actual = objectMapper.readValue(json, new TypeReference<List<InboundMessage>>() {
+        var actual = jsonMapper.readValue(json, new TypeReference<List<InboundMessage>>() {
         });
 
         // then
@@ -88,12 +88,12 @@ class ParallelHierarchyJsonTypedDeserializerTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeInboundSmsMessageAsInboundSmsMessageFromJson() throws JsonProcessingException {
+    void shouldDeserializeInboundSmsMessageAsInboundSmsMessageFromJson() {
         // given
         String json ="{'direction':'INBOUND','channel':'SMS'}";
 
         // when
-        var actual = objectMapper.readValue(json, InboundSmsMessage.class);
+        var actual = jsonMapper.readValue(json, InboundSmsMessage.class);
 
         // then
         then(actual).isEqualTo(new InboundSmsMessage());

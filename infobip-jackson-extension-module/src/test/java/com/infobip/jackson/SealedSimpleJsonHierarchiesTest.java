@@ -1,10 +1,10 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.util.List;
 
@@ -14,108 +14,108 @@ import static org.assertj.core.api.BDDAssertions.then;
 class SealedSimpleJsonHierarchiesTest extends TestBase {
 
     @Test
-    void shouldDeserializeHumanAsAnimalFromJson() throws JsonProcessingException {
+    void shouldDeserializeHumanAsAnimalFromJson() {
         // given
         String json = "{'type':'HUMAN','name':'givenName'}";
 
         // when
-        Animal actual = objectMapper.readValue(json, Animal.class);
+        Animal actual = jsonMapper.readValue(json, Animal.class);
 
         // then
         then(actual).isEqualTo(new Human("givenName"));
     }
 
     @Test
-    void shouldDeserializeHumanAsAnimalFromSerializedHuman() throws JsonProcessingException {
+    void shouldDeserializeHumanAsAnimalFromSerializedHuman() {
         // given
-        String json = objectMapper.writeValueAsString(new Human("givenName"));
+        String json = jsonMapper.writeValueAsString(new Human("givenName"));
 
         // when
-        Animal actual = objectMapper.readValue(json, Animal.class);
+        Animal actual = jsonMapper.readValue(json, Animal.class);
 
         // then
         then(actual).isEqualTo(new Human("givenName"));
     }
 
     @Test
-    void shouldDeserializeHumanAsMammalFromJson() throws JsonProcessingException {
+    void shouldDeserializeHumanAsMammalFromJson() {
         // given
         String json = "{'type':'HUMAN','name':'givenName'}";
 
         // when
-        Mammal actual = objectMapper.readValue(json, Mammal.class);
+        Mammal actual = jsonMapper.readValue(json, Mammal.class);
 
         // then
         then(actual).isEqualTo(new Human("givenName"));
     }
 
     @Test
-    void shouldDeserializeHumanAsMammalFromSerializedHuman() throws JsonProcessingException {
+    void shouldDeserializeHumanAsMammalFromSerializedHuman() {
         // given
-        String json = objectMapper.writeValueAsString(new Human("givenName"));
+        String json = jsonMapper.writeValueAsString(new Human("givenName"));
 
         // when
-        Mammal actual = objectMapper.readValue(json, Mammal.class);
+        Mammal actual = jsonMapper.readValue(json, Mammal.class);
 
         // then
         then(actual).isEqualTo(new Human("givenName"));
     }
 
     @Test
-    void shouldDeserializeParrotAsAnimalFromJson() throws JsonProcessingException {
+    void shouldDeserializeParrotAsAnimalFromJson() {
         // given
         String json = "{'type':'PARROT','name':'givenName'}";
 
         // when
-        Animal actual = objectMapper.readValue(json, Animal.class);
+        Animal actual = jsonMapper.readValue(json, Animal.class);
 
         // then
         then(actual).isEqualTo(new Parrot());
     }
 
     @Test
-    void shouldDeserializeParrotAsAnimalFromSerializedParrot() throws JsonProcessingException {
+    void shouldDeserializeParrotAsAnimalFromSerializedParrot() {
         // given
-        String json = objectMapper.writeValueAsString(new Parrot());
+        String json = jsonMapper.writeValueAsString(new Parrot());
 
         // when
-        Animal actual = objectMapper.readValue(json, Animal.class);
+        Animal actual = jsonMapper.readValue(json, Animal.class);
 
         // then
         then(actual).isEqualTo(new Parrot());
     }
 
     @Test
-    void shouldDeserializeParrotAsBirdFromJson() throws JsonProcessingException {
+    void shouldDeserializeParrotAsBirdFromJson() {
         // given
         String json = "{'type':'PARROT'}";
 
         // when
-        Bird actual = objectMapper.readValue(json, Bird.class);
+        Bird actual = jsonMapper.readValue(json, Bird.class);
 
         // then
         then(actual).isEqualTo(new Parrot());
     }
 
     @Test
-    void shouldDeserializeParrotAsBirdFromSerializedParrot() throws JsonProcessingException {
+    void shouldDeserializeParrotAsBirdFromSerializedParrot() {
         // given
-        String json = objectMapper.writeValueAsString(new Parrot());
+        String json = jsonMapper.writeValueAsString(new Parrot());
 
         // when
-        Bird actual = objectMapper.readValue(json, Bird.class);
+        Bird actual = jsonMapper.readValue(json, Bird.class);
 
         // then
         then(actual).isEqualTo(new Parrot());
     }
 
     @Test
-    void shouldDeserializeListOfAnimals() throws JsonProcessingException {
+    void shouldDeserializeListOfAnimals() {
         // given
-        String json = objectMapper.writeValueAsString(List.of(new Human("givenName"), new Parrot()));
+        String json = jsonMapper.writeValueAsString(List.of(new Human("givenName"), new Parrot()));
 
         // when
-        List<Animal> actual = objectMapper.readValue(json, new TypeReference<>() {
+        List<Animal> actual = jsonMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
@@ -123,12 +123,12 @@ class SealedSimpleJsonHierarchiesTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeListOfMammals() throws JsonProcessingException {
+    void shouldDeserializeListOfMammals() {
         // given
-        String json = objectMapper.writeValueAsString(List.of(new Human("givenName")));
+        String json = jsonMapper.writeValueAsString(List.of(new Human("givenName")));
 
         // when
-        List<Mammal> actual = objectMapper.readValue(json, new TypeReference<>() {
+        List<Mammal> actual = jsonMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
@@ -136,12 +136,12 @@ class SealedSimpleJsonHierarchiesTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeHumanAsHumanFromJson() throws JsonProcessingException {
+    void shouldDeserializeHumanAsHumanFromJson() {
         // given
         String json = "{'animalType':'HUMAN','name':'givenName'}";
 
         // when
-        Human actual = objectMapper.readValue(json, Human.class);
+        Human actual = jsonMapper.readValue(json, Human.class);
 
         // then
         then(actual).isEqualTo(new Human("givenName"));

@@ -1,16 +1,13 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.*;
+import tools.jackson.databind.node.ObjectNode;
 
-import java.io.IOException;
 import java.util.Map;
 
-class JsonTypedDeserializer<T> extends JsonDeserializer<T> {
-
-    private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
-    };
+class JsonTypedDeserializer<T> extends  ValueDeserializer<T> {
 
     private final JsonTypeResolver resolver;
 
@@ -20,8 +17,10 @@ class JsonTypedDeserializer<T> extends JsonDeserializer<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Map<String, Object> object = p.readValueAs(MAP_TYPE_REFERENCE);
-        return (T) ((ObjectMapper) p.getCodec()).convertValue(object, resolver.resolve(object));
+    public T deserialize(JsonParser p, DeserializationContext ctxt) {
+        var b = p.readValueAs(ObjectNode.class);
+        var object = ctxt.readTreeAsValue(b, Map.class);
+        var resolvedType = resolver.resolve(object);
+        return (T) ctxt.readTreeAsValue(b, resolvedType);
     }
 }

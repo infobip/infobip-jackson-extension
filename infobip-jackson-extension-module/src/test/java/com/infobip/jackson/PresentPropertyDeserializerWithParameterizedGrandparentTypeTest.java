@@ -1,9 +1,8 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.*;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,60 +13,60 @@ import static org.assertj.core.api.BDDAssertions.then;
 class PresentPropertyDeserializerWithParameterizedGrandparentTypeTest extends TestBase {
 
     @Test
-    void shouldDeserializeRoadBikeAsBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsBikeFromJson() {
         // given
         String json = "{'roadBike':'roadBike'}";
 
         // when
-        ParentBike actual = objectMapper.readValue(json, ParentBike.class);
+        ParentBike actual = jsonMapper.readValue(json, ParentBike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));
     }
 
     @Test
-    void shouldDeserializeRoadBikeAsBikeFromSerializedRoadBike() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsBikeFromSerializedRoadBike() {
         // given
-        String json = objectMapper.writeValueAsString(new RoadBike("roadBike"));
+        String json = jsonMapper.writeValueAsString(new RoadBike("roadBike"));
 
         // when
-        ParentBike actual = objectMapper.readValue(json, ParentBike.class);
+        ParentBike actual = jsonMapper.readValue(json, ParentBike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));
     }
 
     @Test
-    void shouldDeserializeBmxAsBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeBmxAsBikeFromJson() {
         // given
         String json = "{'bmx':'bmx'}";
 
         // when
-        ParentBike actual = objectMapper.readValue(json, ParentBike.class);
+        ParentBike actual = jsonMapper.readValue(json, ParentBike.class);
 
         // then
         then(actual).isEqualTo(new Bmx("bmx"));
     }
 
     @Test
-    void shouldDeserializeBmxAsBikeFromSerializedBmx() throws JsonProcessingException {
+    void shouldDeserializeBmxAsBikeFromSerializedBmx() {
         // given
-        String json = objectMapper.writeValueAsString(new Bmx("bmx"));
+        String json = jsonMapper.writeValueAsString(new Bmx("bmx"));
 
         // when
-        ParentBike actual = objectMapper.readValue(json, ParentBike.class);
+        ParentBike actual = jsonMapper.readValue(json, ParentBike.class);
 
         // then
         then(actual).isEqualTo(new Bmx("bmx"));
     }
 
     @Test
-    void shouldDeserializeListOfBikes() throws JsonProcessingException {
+    void shouldDeserializeListOfBikes() {
         // given
-        String json = objectMapper.writeValueAsString(Arrays.asList(new RoadBike("roadBike"), new Bmx("bmx")));
+        String json = jsonMapper.writeValueAsString(Arrays.asList(new RoadBike("roadBike"), new Bmx("bmx")));
 
         // when
-        List<ParentBike> actual = objectMapper.readValue(json, new TypeReference<List<ParentBike>>() {
+        List<ParentBike> actual = jsonMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
@@ -75,24 +74,24 @@ class PresentPropertyDeserializerWithParameterizedGrandparentTypeTest extends Te
     }
 
     @Test
-    void shouldDeserializeBikeWithMultipleMatchingProperties() throws JsonProcessingException {
+    void shouldDeserializeBikeWithMultipleMatchingProperties() {
         // given
         String json = "{'bmx':'', 'roadBike': 'roadBike'}";
 
         // when
-        ParentBike actual = objectMapper.readValue(json, ParentBike.class);
+        ParentBike actual = jsonMapper.readValue(json, ParentBike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));
     }
 
     @Test
-    void shouldDeserializeRoadBikeAsRoadBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsRoadBikeFromJson() {
         // given
         String json = "{'roadBike':'roadBike'}";
 
         // when
-        RoadBike actual = objectMapper.readValue(json, RoadBike.class);
+        RoadBike actual = jsonMapper.readValue(json, RoadBike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));

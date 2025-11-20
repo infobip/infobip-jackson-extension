@@ -1,6 +1,6 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.module.SimpleModule;
 
 public class InfobipJacksonModule extends SimpleModule {
 

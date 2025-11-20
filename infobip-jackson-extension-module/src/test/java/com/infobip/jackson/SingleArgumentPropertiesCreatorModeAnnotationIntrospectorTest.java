@@ -2,11 +2,10 @@ package com.infobip.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.*;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 import java.util.Map;
 
@@ -15,66 +14,64 @@ import static org.assertj.core.api.BDDAssertions.then;
 class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends TestBase {
 
     @Test
-    void shouldDeserializeClassWithSingleFieldAndOnlySingleParameterConstructor() throws JsonProcessingException {
+    void shouldDeserializeClassWithSingleFieldAndOnlySingleParameterConstructor() {
         // given
         String givenJson = "{'foo':'givenFoo'}";
 
         // when
-        ClassWithSingleFieldAndOnlySingleParameterConstructor actual = objectMapper.readValue(givenJson,
-                                                                                              ClassWithSingleFieldAndOnlySingleParameterConstructor.class);
+        ClassWithSingleFieldAndOnlySingleParameterConstructor actual = jsonMapper.readValue(givenJson,
+                                                                                            ClassWithSingleFieldAndOnlySingleParameterConstructor.class);
 
         // then
         then(actual).isEqualTo(new ClassWithSingleFieldAndOnlySingleParameterConstructor("givenFoo"));
     }
 
     @Test
-    void shouldDeserializeClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor() throws JsonProcessingException {
+    void shouldDeserializeClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor() {
         // given
         String givenJson = "{'bar':'givenBar'}";
 
         // when
-        ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor actual = objectMapper.readValue(givenJson,
-                                                                                                                       ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor.class);
+        ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor actual = jsonMapper.readValue(givenJson,
+                                                                                                                     ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor.class);
 
         // then
         then(actual).isEqualTo(new ClassWithSingleFieldAnnotatedWithJsonPropertyAndOnlySingleParameterConstructor("givenBar"));
     }
 
     @Test
-    void shouldDeserializeClassWithMultipleProperties() throws JsonProcessingException {
+    void shouldDeserializeClassWithMultipleProperties() {
         // given
         String givenJson = "{'foo':'givenFoo', 'bar':'givenBar'}";
 
         // when
-        ClassWithMultipleProperties actual = objectMapper.readValue(givenJson, ClassWithMultipleProperties.class);
+        ClassWithMultipleProperties actual = jsonMapper.readValue(givenJson, ClassWithMultipleProperties.class);
 
         // then
         then(actual).isEqualTo(new ClassWithMultipleProperties("givenFoo", "givenBar"));
     }
 
     @Test
-    void shouldDeserializeClassWithMultipleFieldsAndOnlySingleParameterConstructor() throws
-            JsonProcessingException {
+    void shouldDeserializeClassWithMultipleFieldsAndOnlySingleParameterConstructor() {
         // given
         String givenJson = "{'foo':'givenFoo'}";
 
         // when
-        ClassWithMultipleFieldsAndOnlySingleParameterConstructor actual = objectMapper.readValue(givenJson,
-                                                                                                 ClassWithMultipleFieldsAndOnlySingleParameterConstructor.class);
+        ClassWithMultipleFieldsAndOnlySingleParameterConstructor actual = jsonMapper.readValue(givenJson,
+                                                                                               ClassWithMultipleFieldsAndOnlySingleParameterConstructor.class);
 
         // then
         then(actual).isEqualTo(new ClassWithMultipleFieldsAndOnlySingleParameterConstructor("givenFoo"));
     }
 
     @Test
-    void shouldDeserializeClassWithDelegatingCreatorConstructor() throws
-            JsonProcessingException {
+    void shouldDeserializeClassWithDelegatingCreatorConstructor() {
         // given
         String givenJson = "{'foo':'givenFoo'}";
 
         // when
-        ClassWithMultipleFieldsAndOnlySingleParameterConstructor actual = objectMapper.readValue(givenJson,
-                                                                                                 ClassWithMultipleFieldsAndOnlySingleParameterConstructor.class);
+        ClassWithMultipleFieldsAndOnlySingleParameterConstructor actual = jsonMapper.readValue(givenJson,
+                                                                                               ClassWithMultipleFieldsAndOnlySingleParameterConstructor.class);
 
         // then
         then(actual).isEqualTo(new ClassWithMultipleFieldsAndOnlySingleParameterConstructor("givenFoo"));
@@ -87,12 +84,12 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
 
         // when
         Throwable actual = BDDAssertions.catchThrowable(
-                () -> objectMapper.readValue(givenJson, ClassWithMultipleConstructors.class));
+                () -> jsonMapper.readValue(givenJson, ClassWithMultipleConstructors.class));
 
         // then
         then(actual).isInstanceOf(MismatchedInputException.class)
                     .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMultipleConstructors` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
-                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]");
+                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #UNKNOWN]");
     }
 
     @Test
@@ -102,12 +99,12 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
 
         // when
         Throwable actual = BDDAssertions.catchThrowable(
-                () -> objectMapper.readValue(givenJson, ClassWithMismatchingParameterType.class));
+                () -> jsonMapper.readValue(givenJson, ClassWithMismatchingParameterType.class));
 
         // then
         then(actual).isInstanceOf(MismatchedInputException.class)
                     .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMismatchingParameterType` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
-                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]");
+                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #UNKNOWN]");
     }
 
     @Test
@@ -116,13 +113,13 @@ class SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest extends Test
         String givenJson = "{'foo':'givenFooBar'}";
 
         // when
-        Throwable actual = BDDAssertions.catchThrowable(() -> objectMapper.readValue(givenJson,
-                                                                                     ClassWithMismatchingParameterName.class));
+        Throwable actual = BDDAssertions.catchThrowable(() -> jsonMapper.readValue(givenJson,
+                                                                                   ClassWithMismatchingParameterName.class));
 
         // then
         then(actual).isInstanceOf(MismatchedInputException.class)
                     .hasMessage("Cannot construct instance of `com.infobip.jackson.SingleArgumentPropertiesCreatorModeAnnotationIntrospectorTest$ClassWithMismatchingParameterName` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)\n" +
-                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 2]");
+                                        " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #UNKNOWN]");
     }
 
     @Value

@@ -1,6 +1,6 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.*;
 import org.junit.jupiter.api.Test;
 
@@ -12,24 +12,24 @@ import static org.assertj.core.api.BDDAssertions.then;
 class JsonTypedAbstractClassDeserializerTest extends TestBase {
 
     @Test
-    void shouldDeserializeFooAsFooBarFromJson() throws JsonProcessingException {
+    void shouldDeserializeFooAsFooBarFromJson() {
         // given
         String json ="{'type':'FOO','foo':'foo'}";
 
         // when
-        FooBar actual = objectMapper.readValue(json, FooBar.class);
+        FooBar actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Foo("foo"));
     }
 
     @Test
-    void shouldDeserializeBarAsFooBarFromJson() throws JsonProcessingException {
+    void shouldDeserializeBarAsFooBarFromJson() {
         // given
         String json ="{'type':'BAR','bar':'bar'}";
 
         // when
-        FooBar actual = objectMapper.readValue(json, FooBar.class);
+        FooBar actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Bar("bar"));

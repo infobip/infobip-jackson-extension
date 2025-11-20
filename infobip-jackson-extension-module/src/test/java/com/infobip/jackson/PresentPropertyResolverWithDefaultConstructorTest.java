@@ -2,7 +2,6 @@ package com.infobip.jackson;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.CaseFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,12 +10,12 @@ import org.junit.jupiter.api.Test;
 public class PresentPropertyResolverWithDefaultConstructorTest extends TestBase {
 
     @Test
-    void shouldUseResolverWithNoArgsConstructor() throws JsonProcessingException {
+    void shouldUseResolverWithNoArgsConstructor() {
         // given
-        String json = objectMapper.writeValueAsString(new RoadBike("road bike"));
+        String json = jsonMapper.writeValueAsString(new RoadBike("road bike"));
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("road bike"));

@@ -2,8 +2,8 @@ package com.infobip.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.cfg.MapperConfig;
-import com.fasterxml.jackson.databind.introspect.*;
+import tools.jackson.databind.cfg.MapperConfig;
+import tools.jackson.databind.introspect.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;

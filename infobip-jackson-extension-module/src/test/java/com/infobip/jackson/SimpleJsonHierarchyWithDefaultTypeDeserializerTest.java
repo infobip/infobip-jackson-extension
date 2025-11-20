@@ -4,7 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
@@ -13,12 +13,12 @@ import org.junit.jupiter.api.Test;
 class SimpleJsonHierarchyWithDefaultTypeDeserializerTest extends TestBase {
 
     @Test
-    void shouldDeserializeToDefaultType() throws JsonProcessingException {
+    void shouldDeserializeToDefaultType() {
         // given
         String json = "{'foo':'foo'}";
 
         // when
-        var actual = objectMapper.readValue(json, FooBar.class);
+        var actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Foo("foo"));

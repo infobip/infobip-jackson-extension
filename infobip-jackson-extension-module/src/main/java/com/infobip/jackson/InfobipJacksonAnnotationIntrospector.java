@@ -1,7 +1,8 @@
 package com.infobip.jackson;
 
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.NopAnnotationIntrospector;
+import tools.jackson.databind.cfg.MapperConfig;
+import tools.jackson.databind.introspect.Annotated;
+import tools.jackson.databind.introspect.NopAnnotationIntrospector;
 
 import java.lang.reflect.Modifier;
 
@@ -10,15 +11,15 @@ public class InfobipJacksonAnnotationIntrospector extends NopAnnotationIntrospec
     private final JsonTypeResolverFactory factory = new JsonTypeResolverFactory();
 
     @Override
-    public Object findDeserializer(Annotated am) {
+    public Object findDeserializer(MapperConfig<?> config, Annotated am) {
         Class<?> rawType = am.getRawType();
 
         if(!Modifier.isAbstract(rawType.getModifiers())) {
-            return super.findDeserializer(am);
+            return super.findDeserializer(config, am);
         }
 
         return factory.create(rawType)
                       .map(resolver -> (Object) new JsonTypedDeserializer<>(resolver))
-                      .orElseGet(() -> super.findDeserializer(am));
+                      .orElseGet(() -> super.findDeserializer(config, am));
     }
 }

@@ -1,26 +1,25 @@
 package com.infobip.jackson;
 
-import static com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_SINGLE_QUOTES;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.junit.jupiter.api.BeforeEach;
+import tools.jackson.databind.json.JsonMapper;
+
+import static tools.jackson.core.json.JsonReadFeature.ALLOW_SINGLE_QUOTES;
+import static tools.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 public abstract class TestBase {
 
-    protected ObjectMapper objectMapper;
+    protected JsonMapper jsonMapper;
 
     @BeforeEach
     public void setUp() {
-        this.objectMapper = new ObjectMapper();
-        this.objectMapper.configure(ALLOW_SINGLE_QUOTES, true);
-        this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        this.objectMapper.registerModule(new Jdk8Module());
-        this.objectMapper.registerModule(new ParameterNamesModule());
-        this.objectMapper.registerModule(new JavaTimeModule());
-        this.objectMapper.registerModule(new InfobipJacksonModule());
+        var builder = JsonMapper.builder()
+                                .configure(ALLOW_SINGLE_QUOTES, true)
+                                .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
+                                .addModules(new InfobipJacksonModule());
+        this.jsonMapper = customize(builder).build();
+    }
+
+    protected JsonMapper.Builder customize(JsonMapper.Builder builder) {
+        return builder;
     }
 }

@@ -2,11 +2,11 @@ package com.infobip.jackson;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.infobip.jackson.dynamic.DynamicHierarchyDeserializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.module.SimpleModule;
 
 @Configuration
 public class JacksonAutoConfiguration {

@@ -1,22 +1,16 @@
 package com.infobip.jackson.dynamic;
 
-import java.io.IOException;
+import com.infobip.jackson.TypeProvider;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.*;
+import tools.jackson.databind.node.ObjectNode;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infobip.jackson.TypeProvider;
-
-public class DynamicHierarchyDeserializer<T> extends JsonDeserializer<T> {
+public class DynamicHierarchyDeserializer<T> extends ValueDeserializer<T> {
 
     private final Class<T> hierarchyRootType;
     private final Map<String, Class<? extends T>> jsonValueToJavaType;
@@ -64,8 +58,8 @@ public class DynamicHierarchyDeserializer<T> extends JsonDeserializer<T> {
     }
 
     @Override
-    public final T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        ObjectCodec codec = p.getCodec();
+    public final T deserialize(JsonParser p, DeserializationContext ctxt) {
+        var codec = p.objectReadContext();
         JsonNode tree = codec.readTree(p);
         String jsonValue = tree.get(jsonValuePropertyName).textValue();
         Class<? extends T> javaType = jsonValueToJavaType.get(jsonValue);
@@ -74,7 +68,7 @@ public class DynamicHierarchyDeserializer<T> extends JsonDeserializer<T> {
             throw new IllegalArgumentException("No java type mapping specified for json value: " + jsonValue);
         }
 
-        return ((ObjectMapper) codec).convertValue(tree, javaType);
+        return ctxt.readTreeAsValue(tree, javaType);
     }
 
     public Class<T> getHierarchyRootType() {

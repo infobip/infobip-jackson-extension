@@ -5,70 +5,69 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 @AllArgsConstructor
 class PresentPropertyDeserializerTest extends TestBase {
 
     @Test
-    void shouldDeserializeRoadBikeAsBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsBikeFromJson() {
         // given
         String json = "{'roadBike':'roadBike'}";
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));
     }
 
     @Test
-    void shouldDeserializeRoadBikeAsBikeFromSerializedRoadBike() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsBikeFromSerializedRoadBike() {
         // given
-        String json = objectMapper.writeValueAsString(new RoadBike("roadBike"));
+        String json = jsonMapper.writeValueAsString(new RoadBike("roadBike"));
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));
     }
 
     @Test
-    void shouldDeserializeBmxAsBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeBmxAsBikeFromJson() {
         // given
         String json = "{'bmx':'bmx'}";
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new Bmx("bmx"));
     }
 
     @Test
-    void shouldDeserializeBmxAsBikeFromSerializedBmx() throws JsonProcessingException {
+    void shouldDeserializeBmxAsBikeFromSerializedBmx() {
         // given
-        String json = objectMapper.writeValueAsString(new Bmx("bmx"));
+        String json = jsonMapper.writeValueAsString(new Bmx("bmx"));
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new Bmx("bmx"));
     }
 
     @Test
-    void shouldDeserializeListOfBikes() throws JsonProcessingException {
+    void shouldDeserializeListOfBikes() {
         // given
-        String json = objectMapper.writeValueAsString(Arrays.asList(new RoadBike("roadBike"), new Bmx("bmx")));
+        String json = jsonMapper.writeValueAsString(Arrays.asList(new RoadBike("roadBike"), new Bmx("bmx")));
 
         // when
-        List<Bike> actual = objectMapper.readValue(json, new TypeReference<List<Bike>>() {
+        List<Bike> actual = jsonMapper.readValue(json, new TypeReference<>() {
         });
 
         // then
@@ -76,24 +75,24 @@ class PresentPropertyDeserializerTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeBikeWithMultipleMatchingProperties() throws JsonProcessingException {
+    void shouldDeserializeBikeWithMultipleMatchingProperties() {
         // given
         String json = "{'bmx':'', 'roadBike': 'roadBike'}";
 
         // when
-        Bike actual = objectMapper.readValue(json, Bike.class);
+        Bike actual = jsonMapper.readValue(json, Bike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));
     }
 
     @Test
-    void shouldDeserializeRoadBikeAsRoadBikeFromJson() throws JsonProcessingException {
+    void shouldDeserializeRoadBikeAsRoadBikeFromJson() {
         // given
         String json = "{'roadBike':'roadBike'}";
 
         // when
-        RoadBike actual = objectMapper.readValue(json, RoadBike.class);
+        RoadBike actual = jsonMapper.readValue(json, RoadBike.class);
 
         // then
         then(actual).isEqualTo(new RoadBike("roadBike"));

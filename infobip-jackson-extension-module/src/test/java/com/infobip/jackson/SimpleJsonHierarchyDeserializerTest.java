@@ -6,70 +6,69 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 @AllArgsConstructor
 class SimpleJsonHierarchyDeserializerTest extends TestBase {
 
     @Test
-    void shouldDeserializeFooAsFooBarFromJson() throws JsonProcessingException {
+    void shouldDeserializeFooAsFooBarFromJson() {
         // given
         String json ="{'type':'FOO','foo':'foo'}";
 
         // when
-        var actual = objectMapper.readValue(json, FooBar.class);
+        var actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Foo("foo"));
     }
 
     @Test
-    void shouldDeserializeFooAsFooBarFromSerializedFoo() throws JsonProcessingException {
+    void shouldDeserializeFooAsFooBarFromSerializedFoo() {
         // given
-        String json =objectMapper.writeValueAsString(new Foo("foo"));
+        String json = jsonMapper.writeValueAsString(new Foo("foo"));
 
         // when
-        var actual = objectMapper.readValue(json, FooBar.class);
+        var actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Foo("foo"));
     }
 
     @Test
-    void shouldDeserializeBarAsFooBarFromJson() throws JsonProcessingException {
+    void shouldDeserializeBarAsFooBarFromJson() {
         // given
         String json ="{'type':'BAR','bar':'bar'}";
 
         // when
-        var actual = objectMapper.readValue(json, FooBar.class);
+        var actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Bar("bar"));
     }
 
     @Test
-    void shouldDeserializeBarAsFooBarFromSerializedBar() throws JsonProcessingException {
+    void shouldDeserializeBarAsFooBarFromSerializedBar() {
         // given
-        String json =objectMapper.writeValueAsString(new Bar("bar"));
+        String json = jsonMapper.writeValueAsString(new Bar("bar"));
 
         // when
-        var actual = objectMapper.readValue(json, FooBar.class);
+        var actual = jsonMapper.readValue(json, FooBar.class);
 
         // then
         then(actual).isEqualTo(new Bar("bar"));
     }
 
     @Test
-    void shouldDeserializeListOfFooBars() throws JsonProcessingException {
+    void shouldDeserializeListOfFooBars() {
         // given
-        String json =objectMapper.writeValueAsString(Arrays.asList(new Foo("foo"), new Bar("bar")));
+        String json = jsonMapper.writeValueAsString(Arrays.asList(new Foo("foo"), new Bar("bar")));
 
         // when
-        var actual = objectMapper.readValue(json, new TypeReference<List<FooBar>>() {
+        var actual = jsonMapper.readValue(json, new TypeReference<List<FooBar>>() {
         });
 
         // then
@@ -82,7 +81,7 @@ class SimpleJsonHierarchyDeserializerTest extends TestBase {
         String json ="{'type':'baz'}";
 
         // when
-        var actual = catchThrowable(() -> objectMapper.readValue(json, FooBar.class));
+        var actual = catchThrowable(() -> jsonMapper.readValue(json, FooBar.class));
 
         // then
         then(actual).isInstanceOf(IllegalArgumentException.class)
@@ -91,12 +90,12 @@ class SimpleJsonHierarchyDeserializerTest extends TestBase {
     }
 
     @Test
-    void shouldDeserializeFooAsFooFromJson() throws JsonProcessingException {
+    void shouldDeserializeFooAsFooFromJson() {
         // given
         String json ="{'type':'FOO','foo':'foo'}";
 
         // when
-        var actual = objectMapper.readValue(json, Foo.class);
+        var actual = jsonMapper.readValue(json, Foo.class);
 
         // then
         then(actual).isEqualTo(new Foo("foo"));
