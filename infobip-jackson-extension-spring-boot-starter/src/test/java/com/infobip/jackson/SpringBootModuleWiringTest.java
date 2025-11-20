@@ -3,11 +3,12 @@ package com.infobip.jackson;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
-
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.json.JsonMapper;
 
 @AllArgsConstructor
 public class SpringBootModuleWiringTest extends TestBase {
@@ -17,7 +18,8 @@ public class SpringBootModuleWiringTest extends TestBase {
     @Test
     void shouldRegisterInfobipJacksonModule() {
         // when
-        Set<Object> registeredModuleIds = jsonMapper.getRegisteredModuleIds();
+        Set<Object> registeredModuleIds = jsonMapper.registeredModules().stream().map(JacksonModule::getRegistrationId).collect(
+                Collectors.toSet());
 
         // then
         then(registeredModuleIds).contains("com.infobip.jackson.InfobipJacksonModule");
