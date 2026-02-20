@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.infobip</groupId>
 		<artifactId>infobip-jackson-extension</artifactId>
-		<version>3.2.1-SNAPSHOT</version>
+		<version>3.2.1</version>
 	</parent>
 
 	<artifactId>infobip-jackson-extension-module</artifactId>
