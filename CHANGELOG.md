@@ -1,3 +1,6 @@
+### 3.2.0
+* added bom module
+
 ### 3.0.0
 * upgraded to Spring Boot 3
 
