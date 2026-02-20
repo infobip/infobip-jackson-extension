@@ -1,3 +1,6 @@
+### 4.1.0
+* added bom module
+
 ### 4.0.0
 * upgraded to Spring Boot 4
 * upgraded to Jackson 3
