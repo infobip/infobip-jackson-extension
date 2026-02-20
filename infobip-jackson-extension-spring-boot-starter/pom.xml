@@ -9,6 +9,7 @@
 	</parent>
 
 	<artifactId>infobip-jackson-extension-spring-boot-starter</artifactId>
+	<name>infobip-jackson-extension-spring-boot-starter</name>
 
 	<dependencies>
 		<!-- INFOBIP -->
