@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@ConditionalOnClass(ObjectMapper)
+@ConditionalOnClass(ObjectMapper.class)
 @Deprecated(forRemoval = true)
 @Configuration
 public class LegacyJacksonAutoConfiguration {
