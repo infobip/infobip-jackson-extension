@@ -1,3 +1,6 @@
+### 4.2.0
+* added jackson 2 legacy support on 4 mainline in order to support cases where both jackson 3 and 2 are needed (e.g. swagger)
+
 ### 4.1.0
 * added bom module
 
