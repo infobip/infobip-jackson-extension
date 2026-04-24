@@ -19,7 +19,7 @@ public class LegacyInfobipJacksonAnnotationIntrospector extends NopAnnotationInt
         }
 
         return factory.create(rawType)
-                      .map(resolver -> (Object) new JsonTypedDeserializer<>(resolver))
+                      .map(resolver -> (Object) new LegacyJsonTypedDeserializer<>(resolver))
                       .orElseGet(() -> super.findDeserializer(am));
     }
 }

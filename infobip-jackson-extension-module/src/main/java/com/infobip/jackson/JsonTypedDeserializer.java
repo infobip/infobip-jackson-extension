@@ -1,8 +1,8 @@
 package com.infobip.jackson;
 
 import tools.jackson.core.JsonParser;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.*;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.util.Map;
